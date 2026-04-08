@@ -755,6 +755,91 @@ footer {
 .hero-actions { animation: fadeUp 0.55s 0.21s ease both; }
 .hero-stats   { animation: fadeUp 0.55s 0.28s ease both; }
 
+/* ======= OPINIE ======= */
+#opinie { background: var(--bg-light); }
+.opinions-slider-wrap {
+  position: relative;
+  overflow: hidden;
+}
+.opinions-track {
+  display: flex;
+  transition: transform 0.45s cubic-bezier(0.4,0,0.2,1);
+}
+.opinion-card {
+  flex: 0 0 100%;
+  background: var(--white);
+  border: 1px solid var(--gray-1);
+  border-radius: var(--radius-card);
+  padding: 2.5rem 3rem;
+  box-shadow: var(--shadow-card);
+}
+.opinion-quote {
+  font-size: var(--h5);
+  color: #3a3a3a;
+  line-height: 1.7;
+  margin-bottom: 1.75rem;
+  font-style: italic;
+  position: relative;
+}
+.opinion-quote::before {
+  content: '\201C';
+  font-size: 5rem;
+  color: var(--teal);
+  opacity: 0.15;
+  position: absolute;
+  top: -1.5rem;
+  left: -0.5rem;
+  font-family: Georgia, serif;
+  line-height: 1;
+}
+.opinion-author {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.opinion-avatar {
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--teal) 0%, var(--teal-dark) 100%);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem;
+  flex-shrink: 0;
+}
+.opinion-name { font-size: var(--h6); font-weight: 700; color: var(--black); }
+.opinion-role { font-size: var(--p-sm); color: var(--gray-3); margin-top: 2px; }
+.opinions-stars {
+  display: flex; gap: 3px; margin-bottom: 1.25rem;
+}
+.opinions-stars span { color: var(--amber); font-size: 1.1rem; }
+.opinions-nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+.opinions-btn {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  border: 2px solid var(--teal);
+  background: var(--white);
+  color: var(--teal);
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.15s, color 0.15s;
+}
+.opinions-btn:hover { background: var(--teal); color: var(--white); }
+.opinions-dots { display: flex; gap: 8px; }
+.opinions-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--gray-2);
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+.opinions-dot.active { background: var(--teal); transform: scale(1.3); }
+
 /* ======= KONFIGURATOR ======= */
 .cfg-overlay {
   display: none;
@@ -1154,31 +1239,16 @@ footer {
         Szybko. Od 100 sztuk.
       </h1>
       <p class="hero-sub">
-        Produkujemy czekolady, praliny, batony i bakalie pod Twoim logo.
-        Trzy klasy jakości, ekspresowa realizacja 7–14 dni, minimum zaledwie 100 sztuk.
+        Produkujemy czekolady, praliny, batony i bakalie pod Twoim logo.<br>
+        Twoja marka, nasza jakość — gotowe w 7–14 dni.
       </p>
       <div class="hero-actions">
-        <a href="#kontakt" class="btn-primary">Pobierz ofertę hurtową</a>
+        <a href="#kontakt" class="btn-primary">Zamów próbki</a>
         <a href="#" onclick="openConfigurator(); return false;" class="btn-outline">Skonfiguruj produkt</a>
       </div>
-      <div class="hero-stats">
-        <div>
-          <span class="hero-stat-num">100</span>
-          <span class="hero-stat-label">szt. minimum</span>
-        </div>
-        <div>
-          <span class="hero-stat-num">7–14</span>
-          <span class="hero-stat-label">dni realizacji</span>
-        </div>
-        <div>
-          <span class="hero-stat-num">3</span>
-          <span class="hero-stat-label">klasy jakości</span>
-        </div>
-        <div>
-          <span class="hero-stat-num">∞</span>
-          <span class="hero-stat-label">skalowalność</span>
-        </div>
-      </div>
+      <p style="margin-top:1.5rem;font-size:var(--h5);color:var(--teal);font-weight:700;border-left:3px solid var(--teal);padding-left:1rem;">
+        Koszt próbek odliczamy od pierwszej faktury.
+      </p>
     </div>
     <div class="hero-visual">
       <div class="hero-card-stack">
@@ -1242,8 +1312,13 @@ footer {
         </div>
         <div class="product-body">
           <div class="product-name">Czekolady & Tabliczki</div>
-          <p class="product-desc">Ciemna, mleczna i biała. Dodatki: liofilizaty, bakalie, sól, akcenty góralskie. Pełna personalizacja.</p>
-          <a href="#kontakt" class="product-link">Zapytaj o wycenę <span>→</span></a>
+          <ul style="list-style:none;margin:0.5rem 0 0;padding:0;display:flex;flex-direction:column;gap:0.35rem;">
+            <li style="font-size:var(--p-sm);color:#3a3a3a;display:flex;align-items:center;gap:0.4rem;"><span style="color:var(--teal);font-weight:700;">→</span> Tabliczka mleczna 100g z logo</li>
+            <li style="font-size:var(--p-sm);color:#3a3a3a;display:flex;align-items:center;gap:0.4rem;"><span style="color:var(--teal);font-weight:700;">→</span> Tabliczka gorzka 72% kakao 100g</li>
+            <li style="font-size:var(--p-sm);color:#3a3a3a;display:flex;align-items:center;gap:0.4rem;"><span style="color:var(--teal);font-weight:700;">→</span> Biała czekolada z maliną liofilizowaną 80g</li>
+            <li style="font-size:var(--p-sm);color:#3a3a3a;display:flex;align-items:center;gap:0.4rem;"><span style="color:var(--teal);font-weight:700;">→</span> Mini tabliczki 20g (op. zbiorowe)</li>
+            <li style="font-size:var(--p-sm);color:#3a3a3a;display:flex;align-items:center;gap:0.4rem;"><span style="color:var(--teal);font-weight:700;">→</span> Mleczna z orzechami laskowymi 100g</li>
+          </ul>
         </div>
       </div>
       <div class="product-card">
@@ -1253,8 +1328,13 @@ footer {
         </div>
         <div class="product-body">
           <div class="product-name">Praliny Rzemieślnicze</div>
-          <p class="product-desc">Nadzienia: śliwowica, żurawina, ganache kawowy, karmel solony. Eleganckie pudełka na zamówienie.</p>
-          <a href="#kontakt" class="product-link">Zapytaj o wycenę <span>→</span></a>
+          <ul style="list-style:none;margin:0.5rem 0 0;padding:0;display:flex;flex-direction:column;gap:0.35rem;">
+            <li style="font-size:var(--p-sm);color:#3a3a3a;display:flex;align-items:center;gap:0.4rem;"><span style="color:var(--teal);font-weight:700;">→</span> Pralinki karmelowe 12 szt. w pudełku</li>
+            <li style="font-size:var(--p-sm);color:#3a3a3a;display:flex;align-items:center;gap:0.4rem;"><span style="color:var(--teal);font-weight:700;">→</span> Trufle z ganache kawowym 9 szt.</li>
+            <li style="font-size:var(--p-sm);color:#3a3a3a;display:flex;align-items:center;gap:0.4rem;"><span style="color:var(--teal);font-weight:700;">→</span> Praliny ze śliwowicą w czekoladzie gorzkiej 12 szt.</li>
+            <li style="font-size:var(--p-sm);color:#3a3a3a;display:flex;align-items:center;gap:0.4rem;"><span style="color:var(--teal);font-weight:700;">→</span> Serca z wiśnią w koniaku 8 szt.</li>
+            <li style="font-size:var(--p-sm);color:#3a3a3a;display:flex;align-items:center;gap:0.4rem;"><span style="color:var(--teal);font-weight:700;">→</span> Zestaw mieszany w pudełku prezentowym 18 szt.</li>
+          </ul>
         </div>
       </div>
       <div class="product-card">
@@ -1264,8 +1344,13 @@ footer {
         </div>
         <div class="product-body">
           <div class="product-name">Batony & Przekąski</div>
-          <p class="product-desc">Batony proteinowe, owsiane i rzemieślnicze. Idealne dla marek fitness, kawiarni i sieci FMCG.</p>
-          <a href="#kontakt" class="product-link">Zapytaj o wycenę <span>→</span></a>
+          <ul style="list-style:none;margin:0.5rem 0 0;padding:0;display:flex;flex-direction:column;gap:0.35rem;">
+            <li style="font-size:var(--p-sm);color:#3a3a3a;display:flex;align-items:center;gap:0.4rem;"><span style="color:var(--teal);font-weight:700;">→</span> Baton proteinowy czekoladowo-migdałowy 45g</li>
+            <li style="font-size:var(--p-sm);color:#3a3a3a;display:flex;align-items:center;gap:0.4rem;"><span style="color:var(--teal);font-weight:700;">→</span> Baton owsiany z czekoladą i żurawiną 40g</li>
+            <li style="font-size:var(--p-sm);color:#3a3a3a;display:flex;align-items:center;gap:0.4rem;"><span style="color:var(--teal);font-weight:700;">→</span> Baton ciemna czekolada + sól morska 50g</li>
+            <li style="font-size:var(--p-sm);color:#3a3a3a;display:flex;align-items:center;gap:0.4rem;"><span style="color:var(--teal);font-weight:700;">→</span> Baton energetyczny daktyle + orzechy 40g</li>
+            <li style="font-size:var(--p-sm);color:#3a3a3a;display:flex;align-items:center;gap:0.4rem;"><span style="color:var(--teal);font-weight:700;">→</span> Mini batony czekoladowe 25g (zestaw 3 szt.)</li>
+          </ul>
         </div>
       </div>
       <div class="product-card">
@@ -1275,10 +1360,107 @@ footer {
         </div>
         <div class="product-body">
           <div class="product-name">Bakalie & Owoce w Czekoladzie</div>
-          <p class="product-desc">Liofilizowane maliny, truskawki, żurawina. Orzechy oblane czekoladą. Segment premium i delikatesy.</p>
-          <a href="#kontakt" class="product-link">Zapytaj o wycenę <span>→</span></a>
+          <ul style="list-style:none;margin:0.5rem 0 0;padding:0;display:flex;flex-direction:column;gap:0.35rem;">
+            <li style="font-size:var(--p-sm);color:#3a3a3a;display:flex;align-items:center;gap:0.4rem;"><span style="color:var(--teal);font-weight:700;">→</span> Maliny liofilizowane w czekoladzie gorzkiej 100g</li>
+            <li style="font-size:var(--p-sm);color:#3a3a3a;display:flex;align-items:center;gap:0.4rem;"><span style="color:var(--teal);font-weight:700;">→</span> Orzechy nerkowca w czekoladzie mlecznej 150g</li>
+            <li style="font-size:var(--p-sm);color:#3a3a3a;display:flex;align-items:center;gap:0.4rem;"><span style="color:var(--teal);font-weight:700;">→</span> Żurawina suszona w białej czekoladzie 100g</li>
+            <li style="font-size:var(--p-sm);color:#3a3a3a;display:flex;align-items:center;gap:0.4rem;"><span style="color:var(--teal);font-weight:700;">→</span> Mix bakaliowy w czekoladzie premium 200g</li>
+            <li style="font-size:var(--p-sm);color:#3a3a3a;display:flex;align-items:center;gap:0.4rem;"><span style="color:var(--teal);font-weight:700;">→</span> Truskawki liofilizowane w czekoladzie gorzkiej 80g</li>
+          </ul>
         </div>
       </div>
+    </div>
+
+    <div style="text-align:center;margin-top:3rem;padding-top:2.5rem;border-top:1px solid var(--gray-1);">
+      <a href="#kontakt" class="btn-primary" style="font-size:var(--h5);padding:1rem 2.5rem;">Zamów próbki</a>
+      <p style="margin-top:1rem;font-size:var(--h6);color:#5a5a5a;">Gotowe próbki ze wszystkich kategorii — <strong>99 PLN</strong> odliczane od pierwszej faktury!</p>
+    </div>
+  </div>
+</section>
+
+<!-- OPINIE -->
+<section id="opinie">
+  <div class="section-wrap">
+    <div class="section-header-center">
+      <span class="section-tag">Opinie klientów</span>
+      <h2 class="section-title">Co mówią o nas <span>nasi klienci</span></h2>
+      <p class="section-sub">Zaufali nam liderzy z największych firm w Polsce — ich słowa mówią same za siebie.</p>
+    </div>
+    <div class="opinions-slider-wrap">
+      <div class="opinions-track" id="opinionsTrack">
+
+        <div class="opinion-card">
+          <div class="opinions-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+          <p class="opinion-quote">Schronisko Bukowina dostarczyło nam 2000 czekolad z logo Nike na event Warsaw Running Festival w zaledwie 10 dni. Jakość absolutnie premium — każda tabliczka identyczna, opakowanie perfekcyjne. Nasi biegacze byli zachwyceni. Na pewno wracamy przed kolejną edycją.</p>
+          <div class="opinion-author">
+            <div class="opinion-avatar">👟</div>
+            <div>
+              <div class="opinion-name">Piotr Zając</div>
+              <div class="opinion-role">Country Director · Nike Poland</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="opinion-card">
+          <div class="opinions-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+          <p class="opinion-quote">Szukałam dostawcy czekolad branded na Welcome Packs dla 500 nowych pracowników. W ciągu 24h miałam próbki, wycenę i projekt opakowania. Czekolady z logo Capgemini trafiły na czas i zrobiły ogromne wrażenie na całym dziale onboarding. Polecam bez wahania każdemu działowi HR.</p>
+          <div class="opinion-author">
+            <div class="opinion-avatar">💼</div>
+            <div>
+              <div class="opinion-name">Marta Kowalczyk</div>
+              <div class="opinion-role">HR Manager · Capgemini Polska</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="opinion-card">
+          <div class="opinions-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+          <p class="opinion-quote">Zamówiliśmy ekskluzywne zestawy pralin dla kluczowych klientów na koniec roku. Efekt przerósł oczekiwania — każdy partner biznesowy pytał, skąd te czekolady. Relacja jakość-cena jest nie do pobicia, a czas realizacji imponujący. To już nasze trzecie zamówienie.</p>
+          <div class="opinion-author">
+            <div class="opinion-avatar">🏦</div>
+            <div>
+              <div class="opinion-name">Tomasz Wiśniewski</div>
+              <div class="opinion-role">Head of Marketing · mBank</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="opinion-card">
+          <div class="opinions-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+          <p class="opinion-quote">Jako sieć delikatesów testowałem wielu producentów white-label. Schronisko Bukowina wyróżnia się przede wszystkim konsekwencją jakości — każda partia identyczna, zero reklamacji przez 8 miesięcy współpracy. Moi klienci kupują te czekolady regularnie i pytają o kolejne smaki.</p>
+          <div class="opinion-author">
+            <div class="opinion-avatar">🛒</div>
+            <div>
+              <div class="opinion-name">Krzysztof Adamski</div>
+              <div class="opinion-role">Właściciel · Delikatesy Smakosz (12 sklepów)</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="opinion-card">
+          <div class="opinions-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+          <p class="opinion-quote">Zorganizowałam incentive trip dla 150 menedżerów i potrzebowałam wyjątkowych upominków. Czekolady z indywidualnym nadrukiem i kartonikiem z logo agencji — wow! Kilka osób przysłało mi zdjęcia z domu, bo nie mogli się zmusić do zjedzenia tak ładnego opakowania. Wzruszające i smaczne!</p>
+          <div class="opinion-author">
+            <div class="opinion-avatar">✈️</div>
+            <div>
+              <div class="opinion-name">Agnieszka Nowak</div>
+              <div class="opinion-role">Event Director · TUI Poland</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="opinions-nav">
+      <button class="opinions-btn" onclick="opinionsMove(-1)" title="Poprzednia">&#8592;</button>
+      <div class="opinions-dots" id="opinionsDots">
+        <div class="opinions-dot active" onclick="opinionsGoTo(0)"></div>
+        <div class="opinions-dot" onclick="opinionsGoTo(1)"></div>
+        <div class="opinions-dot" onclick="opinionsGoTo(2)"></div>
+        <div class="opinions-dot" onclick="opinionsGoTo(3)"></div>
+        <div class="opinions-dot" onclick="opinionsGoTo(4)"></div>
+      </div>
+      <button class="opinions-btn" onclick="opinionsMove(1)" title="Następna">&#8594;</button>
     </div>
   </div>
 </section>
@@ -1487,15 +1669,15 @@ footer {
   <div class="section-wrap">
     <div class="form-wrap">
       <div class="form-info">
-        <span class="section-tag">Bezpłatne próbki</span>
+        <span class="section-tag">Próbki za 99 zł</span>
         <h2 class="form-info-title">Zamów próbki<br>dla <span>swojej firmy</span></h2>
         <p class="form-info-sub">Wyślij zapytanie — oddzwonimy w ciągu 24 godzin roboczych z wyceną dopasowaną do Twojego zamówienia.</p>
         <div class="form-perks">
           <div class="form-perk">
             <div class="form-perk-check"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
             <div class="form-perk-text">
-              <strong>Bezpłatna próbka produktu</strong>
-              <p>Przed zamówieniem dostajesz próbki wszystkich klas jakości — bez zobowiązań.</p>
+              <strong>Próbki za 99 PLN — odliczane od faktury</strong>
+              <p>Przed zamówieniem dostajesz próbki ze wszystkich kategorii. Koszt 99 zł odliczamy od pierwszej faktury produkcyjnej.</p>
             </div>
           </div>
           <div class="form-perk">
@@ -1620,11 +1802,7 @@ document.addEventListener('click', function(e) {
   card.style.backgroundSize = '';
   card.style.backgroundRepeat = '';
   card.style.backgroundPosition = '';
-  card.style.overflow = 'visible';
-  card.style.position = 'relative';
-  card.style.zIndex = '2';
-  card.style.marginTop = '180px';
-  card.style.maxWidth = '90%';
+  card.style.display = 'none';
 
   // badge above image
   var badge = card.querySelector('.hero-card-badge');
@@ -1665,6 +1843,31 @@ document.addEventListener('click', function(e) {
   ].join(';');
 
   cardStack.insertBefore(choco, cardStack.firstChild);
+})();
+</script>
+
+<script>
+(function() {
+  var current = 0;
+  var total = 5;
+  function opinionsUpdate() {
+    var track = document.getElementById('opinionsTrack');
+    if (track) track.style.transform = 'translateX(-' + (current * 100) + '%)';
+    var dots = document.querySelectorAll('.opinions-dot');
+    dots.forEach(function(d, i) {
+      d.classList.toggle('active', i === current);
+    });
+  }
+  window.opinionsMove = function(dir) {
+    current = (current + dir + total) % total;
+    opinionsUpdate();
+  };
+  window.opinionsGoTo = function(idx) {
+    current = idx;
+    opinionsUpdate();
+  };
+  // Auto-advance every 6s
+  setInterval(function() { opinionsMove(1); }, 6000);
 })();
 </script>
 
