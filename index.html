@@ -885,30 +885,21 @@ footer {
   position: relative;
 }
 .ticker-label {
-  background: var(--teal);
-  color: var(--white);
+  background: transparent;
+  color: rgba(255,255,255,0.7);
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  padding: 0 1.25rem;
-  height: 100%;
+  padding: 0 1rem;
+  height: calc(100% - 16px);
+  margin: 8px 1rem 8px 1.25rem;
   display: flex;
   align-items: center;
   white-space: nowrap;
   flex-shrink: 0;
-  position: relative;
-  z-index: 2;
-}
-.ticker-label::after {
-  content: '';
-  position: absolute;
-  right: -10px;
-  top: 0;
-  bottom: 0;
-  width: 10px;
-  background: var(--teal);
-  clip-path: polygon(0 0, 0 100%, 100% 50%);
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 4px;
 }
 .ticker-track {
   overflow: hidden;
