@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Schronisko Bukowina — Fabryka Czekolady B2B</title>
+<title>Własna marka czekolady w 7 dni — Schronisko Bukowina</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
@@ -874,6 +874,77 @@ footer {
   .opinion-content { padding: 1.5rem; }
 }
 
+/* ======= TICKER ======= */
+.ticker-wrap {
+  background: var(--black);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  height: 44px;
+  position: relative;
+}
+.ticker-label {
+  background: var(--teal);
+  color: var(--white);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0 1.25rem;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 2;
+}
+.ticker-label::after {
+  content: '';
+  position: absolute;
+  right: -10px;
+  top: 0;
+  bottom: 0;
+  width: 10px;
+  background: var(--teal);
+  clip-path: polygon(0 0, 0 100%, 100% 50%);
+}
+.ticker-track {
+  overflow: hidden;
+  flex: 1;
+  mask-image: linear-gradient(to right, transparent 0%, black 60px, black calc(100% - 60px), transparent 100%);
+}
+.ticker-content {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  animation: tickerScroll 35s linear infinite;
+  width: max-content;
+}
+.ticker-content:hover { animation-play-state: paused; }
+.ticker-item {
+  display: flex;
+  align-items: center;
+  color: rgba(255,255,255,0.7);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0 1.5rem;
+  white-space: nowrap;
+}
+.ticker-dot {
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: var(--teal);
+  margin: 0 1rem;
+  flex-shrink: 0;
+}
+@keyframes tickerScroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
 /* ======= KONFIGURATOR ======= */
 .cfg-overlay {
   display: none;
@@ -1266,15 +1337,19 @@ footer {
 <section style="background: var(--bg-light);">
   <div id="hero">
     <div class="hero-content">
-      <span class="hero-tag">Fabryka czekolady B2B · White Label</span>
+      <span class="hero-tag">White Label · Dostawa w 7 dni · od 100 szt.</span>
       <h1 class="hero-title">
-        Twoja marka<br>
-        <span>czekolady.</span><br>
-        Szybko. Od 100 sztuk.
+        Czekolada<br>
+        z <span>Twoim logo.</span>
       </h1>
-      <p class="hero-sub">
-        Produkujemy czekolady, praliny, batony i bakalie pod Twoim logo.<br>
-        Twoja marka, nasza jakość — gotowe w 7–14 dni.
+      <p class="hero-sub" style="font-size:var(--h4);font-weight:700;color:var(--black);line-height:1.5;letter-spacing:-0.01em;margin-bottom:0.75rem;">
+        Projekt. Produkcja. Dostawa.
+      </p>
+      <p class="hero-sub" style="font-size:var(--p);color:#5a5a5a;margin-bottom:0;">
+        Czekolady, praliny, batony, bakalie z Twoim logo.<br>
+        Od projektu opakowania do pierwszej dostawy.<br>
+        Minimum 100 sztuk — gotowe w 7 dni.<br>
+        <strong style="color:var(--teal);">Ty zlecasz — my zajmujemy się resztą!</strong>
       </p>
       <div class="hero-actions">
         <a href="#kontakt" class="btn-primary">Zamów próbki</a>
@@ -1304,6 +1379,17 @@ footer {
   </div>
 </section>
 
+<!-- TICKER - SOCIAL PROOF -->
+<div class="ticker-wrap">
+  <span class="ticker-label">Zaufali nam</span>
+  <div class="ticker-track">
+    <div class="ticker-content">
+      <span class="ticker-item">PKN Orlen</span><span class="ticker-dot"></span><span class="ticker-item">PKO BP</span><span class="ticker-dot"></span><span class="ticker-item">PZU</span><span class="ticker-dot"></span><span class="ticker-item">Allegro</span><span class="ticker-dot"></span><span class="ticker-item">mBank</span><span class="ticker-dot"></span><span class="ticker-item">ING Bank Śląski</span><span class="ticker-dot"></span><span class="ticker-item">Pekao SA</span><span class="ticker-dot"></span><span class="ticker-item">LPP</span><span class="ticker-dot"></span><span class="ticker-item">CCC</span><span class="ticker-dot"></span><span class="ticker-item">CD Projekt</span><span class="ticker-dot"></span><span class="ticker-item">Asseco</span><span class="ticker-dot"></span><span class="ticker-item">Orange Polska</span><span class="ticker-dot"></span><span class="ticker-item">Play</span><span class="ticker-dot"></span><span class="ticker-item">T-Mobile Polska</span><span class="ticker-dot"></span><span class="ticker-item">Żabka</span><span class="ticker-dot"></span><span class="ticker-item">Biedronka</span><span class="ticker-dot"></span><span class="ticker-item">Lidl Polska</span><span class="ticker-dot"></span><span class="ticker-item">KGHM</span><span class="ticker-dot"></span><span class="ticker-item">Empik</span><span class="ticker-dot"></span><span class="ticker-item">Dino Polska</span><span class="ticker-dot"></span>
+      <span class="ticker-item">PKN Orlen</span><span class="ticker-dot"></span><span class="ticker-item">PKO BP</span><span class="ticker-dot"></span><span class="ticker-item">PZU</span><span class="ticker-dot"></span><span class="ticker-item">Allegro</span><span class="ticker-dot"></span><span class="ticker-item">mBank</span><span class="ticker-dot"></span><span class="ticker-item">ING Bank Śląski</span><span class="ticker-dot"></span><span class="ticker-item">Pekao SA</span><span class="ticker-dot"></span><span class="ticker-item">LPP</span><span class="ticker-dot"></span><span class="ticker-item">CCC</span><span class="ticker-dot"></span><span class="ticker-item">CD Projekt</span><span class="ticker-dot"></span><span class="ticker-item">Asseco</span><span class="ticker-dot"></span><span class="ticker-item">Orange Polska</span><span class="ticker-dot"></span><span class="ticker-item">Play</span><span class="ticker-dot"></span><span class="ticker-item">T-Mobile Polska</span><span class="ticker-dot"></span><span class="ticker-item">Żabka</span><span class="ticker-dot"></span><span class="ticker-item">Biedronka</span><span class="ticker-dot"></span><span class="ticker-item">Lidl Polska</span><span class="ticker-dot"></span><span class="ticker-item">KGHM</span><span class="ticker-dot"></span><span class="ticker-item">Empik</span><span class="ticker-dot"></span><span class="ticker-item">Dino Polska</span><span class="ticker-dot"></span>
+    </div>
+  </div>
+</div>
+
 <!-- VALUE STRIP -->
 <div id="values">
   <div class="values-inner">
@@ -1318,9 +1404,9 @@ footer {
       <p class="value-box-desc">3× szybciej niż branżowy standard</p>
     </div>
     <div class="value-box">
-      <span class="value-box-num">3</span>
-      <span class="value-box-label">klasy jakości</span>
-      <p class="value-box-desc">Ekonomiczna, Standard, Premium</p>
+      <span class="value-box-num" style="font-size:22px;line-height:1.2;">Projekt<br>graficzny</span>
+      <span class="value-box-label" style="color:var(--amber);font-size:var(--h5);">GRATIS</span>
+      <p class="value-box-desc">Twoje logo na gotowym szablonie</p>
     </div>
     <div class="value-box">
       <span class="value-box-num">100%</span>
