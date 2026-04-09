@@ -924,26 +924,23 @@ footer {
 .prod-modal-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
 
 /* ======= OPINIE ======= */
-#opinie { background: var(--navy); }
-#opinie .section-wrap { padding: 0; max-width: 100%; }
-.opinie-split {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  min-height: 580px;
-}
-.opinie-img-col {
-  overflow: hidden;
+#opinie {
+  background: url('home_schronisko.jpg') right center / cover no-repeat;
   position: relative;
 }
-.opinie-img-col img {
-  width: 100%; height: 100%;
-  object-fit: cover;
-  object-position: 70% center;
-  display: block;
+#opinie::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(to left, rgba(0,0,0,0) 40%, rgba(10,18,38,0.92) 62%, rgba(10,18,38,0.97) 100%);
+}
+#opinie .section-wrap {
+  position: relative; z-index: 1;
+  display: flex;
+  justify-content: flex-start;
 }
 .opinie-right {
-  background: var(--navy);
-  padding: 4rem 3.5rem;
+  width: 54%;
+  padding: 4rem 0 4rem 3rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -1035,9 +1032,10 @@ footer {
 }
 .opinions-dot.active { background: var(--teal); transform: scale(1.3); }
 @media (max-width: 1024px) {
-  .opinie-split { grid-template-columns: 1fr; }
-  .opinie-img-col { height: 260px; }
-  .opinie-right { padding: 2.5rem 1.5rem; }
+  #opinie { background-position: center center; }
+  #opinie::before { background: rgba(10,18,38,0.72); }
+  #opinie .section-wrap { justify-content: center; }
+  .opinie-right { width: 100%; padding: 3rem 0; }
 }
 @media (max-width: 640px) {
   .opinion-inner { grid-template-columns: 1fr; }
@@ -1668,8 +1666,7 @@ footer {
 <!-- OPINIE -->
 <section id="opinie">
   <div class="section-wrap">
-    <div class="opinie-split">
-      <div class="opinie-right">
+    <div class="opinie-right">
         <div>
           <span class="section-tag">Opinie klientów</span>
           <h2 class="section-title" style="color:var(--white);margin-top:0.75rem;">Co mówią o nas <span>nasi klienci</span></h2>
@@ -1786,11 +1783,7 @@ footer {
       </div>
       <button class="opinions-btn" onclick="opinionsMove(1)" title="Następna">&#8594;</button>
     </div>
-      </div><!-- /opinie-right -->
-      <div class="opinie-img-col">
-        <img src="home_schronisko.jpg" alt="Schronisko Bukowina">
-      </div>
-    </div><!-- /opinie-split -->
+    </div><!-- /opinie-right -->
   </div>
 </section>
 
