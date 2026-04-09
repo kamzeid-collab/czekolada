@@ -1528,6 +1528,96 @@ footer {
   .cfg-contact-form  { grid-template-columns: 1fr; }
   .cfg-price-box     { flex-direction: column; align-items: flex-start; gap: 0.25rem; }
 }
+
+/* =============================================
+   MOBILE FIXES
+   ============================================= */
+
+/* 1. Brak poziomego scrolla */
+html, body { overflow-x: hidden; max-width: 100%; }
+
+/* 2. Nav mobile — logo + hamburger + brak obciętego CTA */
+@media (max-width: 1024px) {
+  nav {
+    height: 60px;
+    padding: 0 1rem;
+    position: sticky; top: 0; z-index: 100;
+  }
+  .nav-right { display: none; }
+  .nav-logo-center {
+    position: absolute; left: 50%; transform: translateX(-50%);
+    top: 50%; margin-top: 0;
+  }
+  .nav-logo-center img { height: 72px; }
+  .hamburger { display: flex; order: -1; }
+  .mobile-menu { top: 60px; }
+  /* Dodaj CTA do menu mobilnego zamiast w nav */
+}
+
+/* 3. Wyróżniki (value strip) — poziomy slider na mobile */
+@media (max-width: 640px) {
+  #values { padding: 0; overflow: hidden; }
+  .values-inner {
+    display: flex !important;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    gap: 0;
+    grid-template-columns: unset;
+    max-width: 100%;
+    background: none;
+    padding: 0;
+    margin: 0;
+  }
+  .values-inner::-webkit-scrollbar { display: none; }
+  .values-inner { scrollbar-width: none; }
+  .value-box {
+    flex: 0 0 78vw;
+    scroll-snap-align: start;
+    padding: 2rem 1.5rem;
+    border-right: 1px solid rgba(255,255,255,0.15);
+  }
+  .value-box:last-child { border-right: none; }
+}
+
+/* 4. Produkty — poziomy slider na mobile */
+@media (max-width: 1024px) {
+  .products-grid {
+    display: flex !important;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    gap: 1rem;
+    grid-template-columns: unset;
+    padding: 0.5rem 1.5rem 1.5rem;
+    margin: 0 -1.5rem;
+    scrollbar-width: none;
+  }
+  .products-grid::-webkit-scrollbar { display: none; }
+  .product-card {
+    flex: 0 0 78vw;
+    scroll-snap-align: start;
+    max-width: 78vw;
+  }
+}
+
+/* 5. Opinie — tło domku na mobile */
+@media (max-width: 900px) {
+  #opinie .section-wrap {
+    flex-direction: column;
+    min-height: unset;
+  }
+  .opinie-right {
+    width: 100%;
+    padding: 3rem 1.5rem;
+    background:
+      linear-gradient(rgba(13,53,80,0.88), rgba(13,53,80,0.88)),
+      url('home_schronisko.jpg') center center / cover no-repeat;
+  }
+  .opinie-img-col { display: none; }
+}
 </style>
 </head>
 <body>
@@ -1581,7 +1671,7 @@ footer {
   <a href="#proces" onclick="closeMenu()">Jak działamy</a>
   <a href="#" onclick="closeMenu();openConfigurator();return false;">Konfigurator</a>
   <a href="#kontakt" onclick="closeMenu()">Kontakt</a>
-  <a href="#" onclick="closeMenu(); openCheckout(); return false;" class="cta">Zamów Próbki</a>
+  <a href="#" onclick="closeMenu(); openCheckout(); return false;" class="cta">Zamów Próbki — 99 PLN</a>
 </div>
 
 <!-- HERO -->
