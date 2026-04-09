@@ -1546,7 +1546,6 @@ body { overflow-x: clip; max-width: 100%; }
     position: sticky; top: 0; z-index: 100;
   }
   .nav-right { display: none; }
-  nav > .nav-cta { display: none; }
   .nav-logo-center {
     position: absolute; left: 50%; transform: translateX(-50%);
     top: 50%; margin-top: 0;
@@ -1661,8 +1660,8 @@ body { overflow-x: clip; max-width: 100%; }
   <div class="nav-right">
     <a href="#" class="nav-links" onclick="openConfigurator();return false;">Konfigurator</a>
     <a href="#kontakt" class="nav-links">Kontakt</a>
+    <a href="#" onclick="openCheckout(); return false;" class="nav-cta">Zamów Próbki</a>
   </div>
-  <a href="#" onclick="openCheckout(); return false;" class="nav-cta">Zamów Próbki</a>
   <div class="hamburger" onclick="toggleMenu()">
     <span></span><span></span><span></span>
   </div>
