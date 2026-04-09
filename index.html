@@ -259,6 +259,7 @@ a.nav-links:hover { background: rgba(255,255,255,0.15); color: #fff; }
   transition: transform .15s ease;
 }
 .hero-yt-thumb:hover .hero-yt-play { transform: translate(-50%, -50%) scale(1.1); }
+.hero-yt-inline { display: none; }
 .hero-card-stack { position: relative; width: 100%; max-width: 400px; display: flex; flex-direction: column; gap: 0; padding-top: 16px; padding-right: 16px; overflow: visible; }
 .hero-main-card {
   background: var(--white);
@@ -540,14 +541,18 @@ a.nav-links:hover { background: rgba(255,255,255,0.15); color: #fff; }
   display: flex; justify-content: center; gap: 1rem;
   margin-top: 3rem; flex-wrap: wrap;
 }
+.proces-cta .btn-primary,
+.btn-outline-light {
+  min-width: 220px; text-align: center;
+  padding: 0.9rem 2rem;
+  font-size: var(--p); font-weight: 700;
+  letter-spacing: 0.04em; text-transform: uppercase;
+  border-radius: var(--radius-btn);
+}
 .btn-outline-light {
   border: 2px solid rgba(255,255,255,0.6);
   color: var(--white);
   background: transparent;
-  padding: 0.75rem 2rem;
-  border-radius: var(--radius-btn);
-  font-size: var(--p); font-weight: 700;
-  letter-spacing: 0.04em; text-transform: uppercase;
   cursor: pointer; text-decoration: none;
   transition: background 0.2s, border-color 0.2s;
   display: inline-block;
@@ -785,10 +790,14 @@ footer {
   .nav-logo-center { position: static; transform: none; }
   nav { justify-content: space-between; }
   #hero { grid-template-columns: 1fr; padding: 3rem 1.5rem; }
-  .hero-visual { display: flex; margin-top: 1.5rem; }
+  .hero-visual { display: none; }
+  .hero-yt-inline { display: block; margin-bottom: 1.5rem; }
   .values-inner { grid-template-columns: repeat(2, 1fr); }
   .products-grid { grid-template-columns: repeat(2, 1fr); }
-  .tiers-grid { grid-template-columns: 1fr; max-width: 420px; margin: 0 auto; }
+  .tiers-grid { display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 1rem; padding-bottom: 1rem; scroll-snap-type: x mandatory; }
+  .tiers-grid::-webkit-scrollbar { height: 4px; }
+  .tiers-grid::-webkit-scrollbar-thumb { background: var(--gray-2); border-radius: 2px; }
+  .tier-card { min-width: 80vw; scroll-snap-align: start; flex-shrink: 0; }
   .process-grid { grid-template-columns: repeat(2, 1fr); gap: 2rem; }
   .process-grid::before { display: none; }
   .segments-grid { grid-template-columns: 1fr; }
@@ -799,7 +808,8 @@ footer {
 }
 @media (max-width: 640px) {
   nav { padding: 0 1rem; }
-  #proces { background-position: 30% center; }
+  #proces { background-position: 70% center; }
+  .product-tag-pill { font-size: 13px; padding: 5px 12px; }
   .values-inner { grid-template-columns: 1fr; }
   .products-grid { grid-template-columns: 1fr; }
   .process-grid { grid-template-columns: 1fr; }
@@ -1460,6 +1470,14 @@ footer {
       <p class="hero-sub" style="font-size:clamp(26px,3.5vw,44px);font-weight:700;color:var(--black);line-height:1.2;letter-spacing:-0.02em;margin-bottom:2rem;">
         PROJEKT PRODUKCJA DOSTAWA
       </p>
+      <div class="hero-yt-inline">
+        <a href="#" class="hero-yt-thumb" onclick="return false;" aria-label="Obejrzyj film">
+          <img src="hero-youtube.jpg" alt="Film o czekoladach z logo">
+          <span class="hero-yt-play">
+            <svg viewBox="0 0 68 48" width="68" height="48"><rect width="68" height="48" rx="10" fill="#FF0000" opacity=".9"/><polygon points="27,14 27,34 46,24" fill="#fff"/></svg>
+          </span>
+        </a>
+      </div>
       <div class="hero-actions">
         <a href="#kontakt" class="btn-primary">Zamów próbki</a>
         <a href="#" onclick="openConfigurator(); return false;" class="btn-outline">Skonfiguruj produkt</a>
@@ -1885,7 +1903,7 @@ footer {
       </div>
     </div>
     <div class="proces-cta">
-      <a href="#" class="btn-primary" onclick="openConfigurator(); return false;">Zrób to sam</a>
+      <a href="#" class="btn-primary" onclick="openConfigurator(); return false;">Stwórz swój produkt</a>
       <a href="#" class="btn-outline-light" onclick="openCallpage(); return false;">Zamów kontakt</a>
     </div>
   </div>
