@@ -795,6 +795,63 @@ footer {
   color: var(--gray-3);
   border-color: transparent;
 }
+/* --- EXPANDABLE (karta 1) --- */
+.prod-tag--toggle {
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.prod-tag--toggle:hover {
+  background: var(--teal);
+  color: var(--white);
+  border-color: transparent;
+}
+.prod-expand {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease;
+}
+.prod-expand.open { max-height: 200px; }
+
+/* --- MODAL (karta 2) --- */
+.prod-modal-overlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 9000;
+  align-items: center; justify-content: center;
+}
+.prod-modal-overlay.open { display: flex; }
+.prod-modal {
+  background: var(--white);
+  border-radius: var(--radius-card);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  width: min(480px, 92vw);
+  max-height: 80vh;
+  overflow-y: auto;
+  padding: 2rem;
+  position: relative;
+  animation: modalIn 0.2s ease;
+}
+@keyframes modalIn {
+  from { opacity: 0; transform: translateY(12px) scale(0.97); }
+  to   { opacity: 1; transform: none; }
+}
+.prod-modal-close {
+  position: absolute; top: 1rem; right: 1rem;
+  background: var(--gray-1); border: none; cursor: pointer;
+  width: 32px; height: 32px; border-radius: 50%;
+  font-size: 18px; line-height: 32px; text-align: center;
+  color: var(--gray-3); transition: background 0.15s;
+}
+.prod-modal-close:hover { background: var(--gray-2); }
+.prod-modal-title {
+  font-size: var(--h4); font-weight: 700; color: var(--black);
+  margin-bottom: 0.25rem;
+}
+.prod-modal-sub {
+  font-size: var(--p-sm); color: var(--gray-3); margin-bottom: 1.25rem;
+}
+.prod-modal-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
 
 /* ======= OPINIE ======= */
 #opinie { background: var(--navy); }
@@ -1424,7 +1481,23 @@ footer {
             <span class="prod-tag">Gorzka 80%</span>
             <span class="prod-tag">Dubajska</span>
             <span class="prod-tag">Biała z maliną</span>
-            <span class="prod-tag prod-tag--more">+12 więcej</span>
+            <span class="prod-tag prod-tag--more prod-tag--toggle" id="expand-toggle" onclick="toggleExpand()">+12 więcej ↓</span>
+          </div>
+          <div class="prod-expand" id="prod-expand">
+            <div class="prod-tags" style="padding-top:0.4rem;">
+              <span class="prod-tag">Ruby różowa</span>
+              <span class="prod-tag">Z orzechami laskowymi</span>
+              <span class="prod-tag">Pomarańczowa</span>
+              <span class="prod-tag">Z solą himalajską</span>
+              <span class="prod-tag">Biała waniliowa</span>
+              <span class="prod-tag">Z chili</span>
+              <span class="prod-tag">Kokosowa</span>
+              <span class="prod-tag">Karmelowa</span>
+              <span class="prod-tag">Jagodowa</span>
+              <span class="prod-tag">Z quinoa</span>
+              <span class="prod-tag">Bez cukru</span>
+              <span class="prod-tag">Vegan dark 70%</span>
+            </div>
           </div>
         </div>
       </div>
@@ -1440,7 +1513,7 @@ footer {
             <span class="prod-tag">Trufle kawowe</span>
             <span class="prod-tag">Ze śliwowicą</span>
             <span class="prod-tag">Serca wiśniowe</span>
-            <span class="prod-tag prod-tag--more">+8 więcej</span>
+            <span class="prod-tag prod-tag--more prod-tag--toggle" onclick="openModal()">+8 więcej →</span>
           </div>
         </div>
       </div>
@@ -2543,9 +2616,50 @@ function cfgSubmit() {
 
 // keyboard ESC
 document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') closeConfigurator();
+  if (e.key === 'Escape') { closeConfigurator(); closeModal(); }
 });
+
+/* ---- EXPANDABLE ---- */
+function toggleExpand() {
+  var panel = document.getElementById('prod-expand');
+  var toggle = document.getElementById('expand-toggle');
+  var open = panel.classList.toggle('open');
+  toggle.textContent = open ? 'Zwiń ↑' : '+12 więcej ↓';
+}
+
+/* ---- MODAL ---- */
+function openModal() {
+  document.getElementById('prod-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal() {
+  document.getElementById('prod-modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
 </script>
+
+<!-- MODAL: Praliny -->
+<div class="prod-modal-overlay" id="prod-modal" onclick="if(event.target===this)closeModal()">
+  <div class="prod-modal">
+    <button class="prod-modal-close" onclick="closeModal()">✕</button>
+    <div class="prod-modal-title">Praliny Rzemieślnicze</div>
+    <div class="prod-modal-sub">12 wariantów smakowych dostępnych w white label</div>
+    <div class="prod-modal-tags">
+      <span class="prod-tag">Karmelowe</span>
+      <span class="prod-tag">Trufle kawowe</span>
+      <span class="prod-tag">Ze śliwowicą</span>
+      <span class="prod-tag">Serca wiśniowe</span>
+      <span class="prod-tag">Pistacjowe</span>
+      <span class="prod-tag">Cytrynowe</span>
+      <span class="prod-tag">Rum &amp; rodzynki</span>
+      <span class="prod-tag">Malinowe</span>
+      <span class="prod-tag">Miód &amp; lawenda</span>
+      <span class="prod-tag">Tahini &amp; sezam</span>
+      <span class="prod-tag">Kokosowe</span>
+      <span class="prod-tag">Orzech &amp; miód</span>
+    </div>
+  </div>
+</div>
 
 </body>
 </html>
