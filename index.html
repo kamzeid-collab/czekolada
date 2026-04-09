@@ -944,14 +944,7 @@ footer {
   gap: 1.5rem;
 }
 .opinie-img-col {
-  overflow: hidden;
-}
-.opinie-img-col img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center center;
-  display: block;
+  background: url('home_schronisko.jpg') center center / cover no-repeat;
 }
 .opinie-right .section-tag { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.8); }
 .opinie-right .section-title { color: var(--white); margin-bottom: 0.5rem; }
@@ -1040,8 +1033,7 @@ footer {
 .opinions-dot.active { background: var(--teal); transform: scale(1.3); }
 @media (max-width: 1024px) {
   #opinie .section-wrap { grid-template-columns: 1fr; }
-  .opinie-img-col { height: 280px; overflow: hidden; }
-  .opinie-img-col img { position: static; width: 100%; height: 100%; object-fit: cover; object-position: center 30%; }
+  .opinie-img-col { height: 280px; order: -1; }
   .opinie-right { padding: 2.5rem 1.5rem; }
 }
 @media (max-width: 640px) {
@@ -1791,9 +1783,7 @@ footer {
       <button class="opinions-btn" onclick="opinionsMove(1)" title="Następna">&#8594;</button>
     </div>
     </div><!-- /opinie-right -->
-    <div class="opinie-img-col">
-      <img src="home_schronisko.jpg" alt="Schronisko Bukowina">
-    </div>
+    <div class="opinie-img-col"></div>
   </div>
 </section>
 
