@@ -947,6 +947,12 @@ footer {
 .opinie-img-col {
   flex: 1;
   background: url('home_schronisko.jpg') center center / cover no-repeat;
+  position: relative;
+}
+.opinie-img-col::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(to right, var(--navy) 0%, transparent 35%);
 }
 .opinie-right .section-tag { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.8); }
 .opinie-right .section-title { color: var(--white); margin-bottom: 0.5rem; }
