@@ -704,9 +704,33 @@ a.nav-links:hover { background: rgba(255,255,255,0.15); color: #fff; }
 }
 .checkout-submit:hover { background: var(--teal-hover); transform: translateY(-1px); }
 .checkout-note { text-align: center; font-size: var(--p-sm); color: var(--gray-3); margin-top: 0.6rem; }
+/* Kroki */
+.checkout-steps { display: flex; align-items: center; gap: 0.4rem; margin-bottom: 1.25rem; }
+.checkout-step { font-size: var(--p-sm); font-weight: 600; color: var(--gray-3); padding: 0.3rem 0.7rem; border-radius: 20px; transition: all 0.2s; }
+.checkout-step.active { background: var(--teal); color: #fff; }
+.checkout-step.done { color: var(--teal); }
+.checkout-step-arrow { color: var(--gray-2); font-size: 1rem; }
+/* Nav przyciski w checkout */
+.checkout-nav { display: flex; gap: 0.75rem; align-items: center; margin-top: 1.25rem; }
+.checkout-btn-back { padding: 0.65rem 1.1rem; background: transparent; border: 1.5px solid var(--gray-2); border-radius: 8px; font-family: var(--font); font-size: var(--p); font-weight: 600; cursor: pointer; color: var(--black); transition: border-color 0.15s; white-space: nowrap; }
+.checkout-btn-back:hover { border-color: var(--black); }
+/* Faktura toggle */
+.checkout-invoice-toggle { display: flex; align-items: center; gap: 0.6rem; cursor: pointer; font-size: var(--p); font-weight: 600; padding: 0.75rem 1rem; border: 1.5px solid var(--gray-2); border-radius: 8px; transition: border-color 0.15s; }
+.checkout-invoice-toggle:has(input:checked) { border-color: var(--teal); background: rgba(0,150,150,0.04); }
+.checkout-invoice-toggle input { accent-color: var(--teal); width: 16px; height: 16px; }
+/* NIP lookup */
+.checkout-nip-row { display: flex; gap: 0.6rem; align-items: flex-end; margin-bottom: 0.5rem; }
+.checkout-nip-btn { padding: 0.6rem 1rem; background: var(--teal); color: #fff; border: none; border-radius: 6px; font-family: var(--font); font-size: var(--p-sm); font-weight: 700; cursor: pointer; white-space: nowrap; transition: background 0.15s; flex-shrink: 0; }
+.checkout-nip-btn:hover { background: var(--teal-hover); }
+.checkout-nip-status { font-size: var(--p-sm); padding: 0.4rem 0; min-height: 1.2rem; }
+.checkout-nip-status.success { color: #10a63c; }
+.checkout-nip-status.error { color: var(--pink); }
+.checkout-nip-status.loading { color: var(--gray-3); }
+.checkout-ship-free { font-weight: 700; color: var(--teal); font-size: var(--p); white-space: nowrap; }
 @media (max-width: 500px) {
   .checkout-modal { padding: 1.25rem; }
   .checkout-row { flex-direction: column; gap: 0; }
+  .checkout-nip-row { flex-direction: column; align-items: stretch; }
 }
 
 /* ======= LEAD FORM ======= */
@@ -2944,8 +2968,11 @@ function closeModal() {
 </script>
 
 <script>
-/* ---- CHECKOUT PRÓBKI ---- */
+/* ---- CHECKOUT PRÓBKI — 3 kroki ---- */
+var co = { shipping: 'inpost' };
+
 function openCheckout() {
+  coGoStep(1);
   document.getElementById('checkoutOverlay').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
@@ -2954,23 +2981,74 @@ function closeCheckout() {
   document.body.style.overflow = '';
 }
 
-// Aktualizacja sumy przy zmianie kuriera
-var shippingPrices = { inpost: 12.99, dpd: 15.99, poczta: 9.99 };
-var shippingNames  = { inpost: 'InPost Paczkomat', dpd: 'DPD Kurier', poczta: 'Poczta Polska' };
-document.addEventListener('change', function(e) {
-  if (e.target.name === 'shipping') {
-    var val = e.target.value;
-    var ship = shippingPrices[val];
-    var total = (99 + ship).toFixed(2).replace('.', ',');
-    document.getElementById('checkoutShippingRow').innerHTML =
-      '<span>Dostawa (' + shippingNames[val] + ')</span><span>' + ship.toFixed(2).replace('.', ',') + ' PLN</span>';
-    document.getElementById('checkoutTotal').textContent = total + ' PLN';
-  }
-});
+function coGoStep(n) {
+  [1,2,3].forEach(function(i) {
+    document.getElementById('coStep' + i).style.display = (i === n) ? '' : 'none';
+    var ind = document.getElementById('cStepInd' + i);
+    ind.classList.toggle('active', i === n);
+    ind.classList.toggle('done', i < n);
+  });
+  document.querySelector('.checkout-modal').scrollTop = 0;
 
-function checkoutSubmit(e) {
-  e.preventDefault();
-  // Tu w przyszłości: wywołanie Stripe
+  if (n === 2) {
+    co.shipping = document.querySelector('input[name="shipping"]:checked').value;
+    document.getElementById('coAddressFields').style.display = (co.shipping === 'dpd') ? '' : 'none';
+  }
+  if (n === 3) {
+    var names = { inpost: 'InPost Paczkomat', dpd: 'DPD Kurier' };
+    document.getElementById('coShippingLabel').textContent = 'GRATIS — ' + names[co.shipping];
+  }
+}
+
+function coValidateStep2() {
+  var name  = document.getElementById('coName').value.trim();
+  var phone = document.getElementById('coPhone').value.trim();
+  var email = document.getElementById('coEmail').value.trim();
+  if (!name || !phone || !email) { alert('Wypełnij imię, telefon i e-mail.'); return; }
+  if (co.shipping === 'dpd') {
+    var street = document.getElementById('coStreet').value.trim();
+    var zip    = document.getElementById('coZip').value.trim();
+    var city   = document.getElementById('coCity').value.trim();
+    if (!street || !zip || !city) { alert('Wypełnij pełny adres dostawy.'); return; }
+  }
+  coGoStep(3);
+}
+
+function coToggleInvoice() {
+  var want = document.getElementById('coWantInvoice').checked;
+  document.getElementById('coInvoiceFields').style.display = want ? '' : 'none';
+}
+
+async function coLookupNip() {
+  var nip    = document.getElementById('coNip').value.replace(/\D/g, '');
+  var status = document.getElementById('coNipStatus');
+  if (nip.length !== 10) {
+    status.textContent = 'NIP musi mieć dokładnie 10 cyfr.';
+    status.className = 'checkout-nip-status error'; return;
+  }
+  status.textContent = 'Szukam w rejestrze MF…';
+  status.className = 'checkout-nip-status loading';
+  var today = new Date().toISOString().split('T')[0];
+  try {
+    var res  = await fetch('https://wl-api.mf.gov.pl/api/search/nip/' + nip + '?date=' + today);
+    var data = await res.json();
+    if (data.result && data.result.subject) {
+      var s = data.result.subject;
+      document.getElementById('coCompany').value     = s.name || '';
+      document.getElementById('coCompanyAddr').value = s.workingAddress || s.residenceAddress || '';
+      status.textContent = '✓ Znaleziono: ' + s.name;
+      status.className = 'checkout-nip-status success';
+    } else {
+      status.textContent = 'Nie znaleziono w rejestrze VAT — wpisz dane ręcznie.';
+      status.className = 'checkout-nip-status error';
+    }
+  } catch(e) {
+    status.textContent = 'Błąd połączenia — wpisz dane ręcznie.';
+    status.className = 'checkout-nip-status error';
+  }
+}
+
+function coSubmit() {
   alert('Wkrótce: przekierowanie do płatności Stripe!');
 }
 </script>
@@ -2990,48 +3068,20 @@ function checkoutSubmit(e) {
       <div class="checkout-price">99 <span>PLN</span></div>
     </div>
 
+    <!-- Wskaźnik kroków -->
+    <div class="checkout-steps">
+      <div class="checkout-step active" id="cStepInd1">1. Dostawa</div>
+      <div class="checkout-step-arrow">›</div>
+      <div class="checkout-step" id="cStepInd2">2. Dane</div>
+      <div class="checkout-step-arrow">›</div>
+      <div class="checkout-step" id="cStepInd3">3. Faktura</div>
+    </div>
+
     <div class="checkout-divider"></div>
 
-    <!-- Formularz -->
-    <form id="checkoutForm" onsubmit="checkoutSubmit(event)">
-
-      <div class="checkout-section-label">Dane dostawy</div>
-
-      <div class="checkout-row">
-        <div class="checkout-field">
-          <label>Imię i nazwisko</label>
-          <input type="text" name="checkout-name" placeholder="Jan Kowalski" required>
-        </div>
-        <div class="checkout-field">
-          <label>Telefon</label>
-          <input type="tel" name="checkout-phone" placeholder="+48 000 000 000" required>
-        </div>
-      </div>
-
-      <div class="checkout-field">
-        <label>Adres e-mail</label>
-        <input type="email" name="checkout-email" placeholder="jan@firma.pl" required>
-      </div>
-
-      <div class="checkout-row">
-        <div class="checkout-field" style="flex:2">
-          <label>Ulica i numer</label>
-          <input type="text" name="checkout-street" placeholder="ul. Przykładowa 12/3" required>
-        </div>
-        <div class="checkout-field" style="flex:1">
-          <label>Kod pocztowy</label>
-          <input type="text" name="checkout-zip" placeholder="00-000" required>
-        </div>
-      </div>
-
-      <div class="checkout-field">
-        <label>Miasto</label>
-        <input type="text" name="checkout-city" placeholder="Warszawa" required>
-      </div>
-
-      <div class="checkout-divider"></div>
-      <div class="checkout-section-label">Wybierz dostawę</div>
-
+    <!-- KROK 1: Wybór dostawy -->
+    <div id="coStep1">
+      <div class="checkout-section-label">Wybierz metodę dostawy</div>
       <div class="checkout-shipping">
         <label class="checkout-ship-option">
           <input type="radio" name="shipping" value="inpost" checked>
@@ -3039,7 +3089,7 @@ function checkoutSubmit(e) {
             <div class="checkout-ship-name">📦 InPost Paczkomat</div>
             <div class="checkout-ship-time">1–2 dni robocze</div>
           </div>
-          <div class="checkout-ship-price">12,99 PLN</div>
+          <div class="checkout-ship-free">GRATIS</div>
         </label>
         <label class="checkout-ship-option">
           <input type="radio" name="shipping" value="dpd">
@@ -3047,20 +3097,86 @@ function checkoutSubmit(e) {
             <div class="checkout-ship-name">🚚 DPD Kurier</div>
             <div class="checkout-ship-time">1 dzień roboczy</div>
           </div>
-          <div class="checkout-ship-price">15,99 PLN</div>
+          <div class="checkout-ship-free">GRATIS</div>
         </label>
-        <label class="checkout-ship-option">
-          <input type="radio" name="shipping" value="poczta">
-          <div class="checkout-ship-box">
-            <div class="checkout-ship-name">✉️ Poczta Polska</div>
-            <div class="checkout-ship-time">3–5 dni roboczych</div>
+      </div>
+      <button class="checkout-submit" style="margin-top:1.25rem" onclick="coGoStep(2)">Dalej →</button>
+    </div>
+
+    <!-- KROK 2: Dane dostawy -->
+    <div id="coStep2" style="display:none">
+      <div class="checkout-section-label">Dane dostawy</div>
+      <div class="checkout-row">
+        <div class="checkout-field">
+          <label>Imię i nazwisko *</label>
+          <input type="text" id="coName" placeholder="Jan Kowalski">
+        </div>
+        <div class="checkout-field">
+          <label>Telefon *</label>
+          <input type="tel" id="coPhone" placeholder="+48 000 000 000">
+        </div>
+      </div>
+      <div class="checkout-field">
+        <label>Adres e-mail *</label>
+        <input type="email" id="coEmail" placeholder="jan@firma.pl">
+      </div>
+      <!-- Adres tylko dla DPD -->
+      <div id="coAddressFields">
+        <div class="checkout-row">
+          <div class="checkout-field" style="flex:2">
+            <label>Ulica i numer *</label>
+            <input type="text" id="coStreet" placeholder="ul. Przykładowa 12/3">
           </div>
-          <div class="checkout-ship-price">9,99 PLN</div>
-        </label>
+          <div class="checkout-field" style="flex:1">
+            <label>Kod pocztowy *</label>
+            <input type="text" id="coZip" placeholder="00-000">
+          </div>
+        </div>
+        <div class="checkout-field">
+          <label>Miasto *</label>
+          <input type="text" id="coCity" placeholder="Warszawa">
+        </div>
+      </div>
+      <div class="checkout-nav">
+        <button class="checkout-btn-back" onclick="coGoStep(1)">← Wstecz</button>
+        <button class="checkout-submit" style="flex:1" onclick="coValidateStep2()">Dalej →</button>
+      </div>
+    </div>
+
+    <!-- KROK 3: Faktura + podsumowanie -->
+    <div id="coStep3" style="display:none">
+      <div class="checkout-section-label">Dane do faktury</div>
+      <label class="checkout-invoice-toggle">
+        <input type="checkbox" id="coWantInvoice" onchange="coToggleInvoice()">
+        <span>Chcę fakturę VAT</span>
+      </label>
+
+      <div id="coInvoiceFields" style="display:none; margin-top:1rem">
+        <div class="checkout-nip-row">
+          <div class="checkout-field" style="flex:1; margin-bottom:0">
+            <label>NIP</label>
+            <input type="text" id="coNip" placeholder="0000000000" maxlength="10" oninput="this.value=this.value.replace(/\D/g,'')">
+          </div>
+          <button class="checkout-nip-btn" onclick="coLookupNip()">Szukaj w GUS</button>
+        </div>
+        <div id="coNipStatus" class="checkout-nip-status"></div>
+        <div class="checkout-field" style="margin-top:0.75rem">
+          <label>Nazwa firmy</label>
+          <input type="text" id="coCompany" placeholder="Firma Sp. z o.o.">
+        </div>
+        <div class="checkout-field">
+          <label>Adres firmy</label>
+          <input type="text" id="coCompanyAddr" placeholder="ul. Przykładowa 1, 00-000 Warszawa">
+        </div>
       </div>
 
       <div class="checkout-divider"></div>
-      <div class="checkout-section-label">Płatność</div>
+
+      <div class="checkout-summary">
+        <div class="checkout-summary-row"><span>Próbki</span><span>99,00 PLN</span></div>
+        <div class="checkout-summary-row"><span>Dostawa</span><span id="coShippingLabel">GRATIS</span></div>
+        <div class="checkout-summary-row checkout-summary-total"><span>Razem</span><span>99,00 PLN</span></div>
+      </div>
 
       <div class="checkout-payment-placeholder">
         <div class="checkout-payment-icon">🔒</div>
@@ -3070,23 +3186,13 @@ function checkoutSubmit(e) {
         </div>
       </div>
 
-      <div class="checkout-divider"></div>
-
-      <div class="checkout-summary">
-        <div class="checkout-summary-row">
-          <span>Próbki</span><span>99,00 PLN</span>
-        </div>
-        <div class="checkout-summary-row" id="checkoutShippingRow">
-          <span>Dostawa (InPost)</span><span>12,99 PLN</span>
-        </div>
-        <div class="checkout-summary-row checkout-summary-total">
-          <span>Razem</span><span id="checkoutTotal">111,99 PLN</span>
-        </div>
+      <div class="checkout-nav">
+        <button class="checkout-btn-back" onclick="coGoStep(2)">← Wstecz</button>
+        <button class="checkout-submit" style="flex:1" onclick="coSubmit()">Zamów i zapłać →</button>
       </div>
-
-      <button class="checkout-submit" type="submit">Zamów i zapłać →</button>
       <p class="checkout-note">Zostaniesz przekierowany do bezpiecznej płatności</p>
-    </form>
+    </div>
+
   </div>
 </div>
 
