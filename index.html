@@ -1533,8 +1533,9 @@ footer {
    MOBILE FIXES
    ============================================= */
 
-/* 1. Brak poziomego scrolla */
-html, body { overflow-x: hidden; max-width: 100%; }
+/* 1. Brak poziomego scrolla — clip zamiast hidden, żeby nie psuć sticky */
+html { overflow-x: clip; }
+body { overflow-x: clip; max-width: 100%; }
 
 /* 2. Nav mobile — logo + hamburger + brak obciętego CTA */
 @media (max-width: 1024px) {
