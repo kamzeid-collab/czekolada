@@ -106,7 +106,8 @@ a.nav-links:hover { background: rgba(255,255,255,0.15); color: #fff; }
   font-weight: 700;
   transition: background 0.15s, transform 0.1s;
   white-space: nowrap;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 .nav-cta:hover { background: var(--gray-1); transform: translateY(-1px); }
 .nav-logo-center {
@@ -187,7 +188,8 @@ a.nav-links:hover { background: rgba(255,255,255,0.15); color: #fff; }
   text-decoration: none;
   display: inline-block;
   transition: background 0.15s, border-color 0.15s, transform 0.1s;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 .btn-primary:hover { background: var(--teal-hover); border-color: var(--teal-hover); transform: translateY(-1px); }
 
@@ -204,6 +206,8 @@ a.nav-links:hover { background: rgba(255,255,255,0.15); color: #fff; }
   text-decoration: none;
   display: inline-block;
   transition: background 0.15s, color 0.15s, transform 0.1s;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 .btn-outline:hover { background: var(--teal); color: var(--white); transform: translateY(-1px); }
 
@@ -220,6 +224,8 @@ a.nav-links:hover { background: rgba(255,255,255,0.15); color: #fff; }
   text-decoration: none;
   display: inline-block;
   transition: background 0.15s, transform 0.1s;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 .btn-pink:hover { background: #e62e58; border-color: #e62e58; transform: translateY(-1px); }
 
@@ -626,6 +632,80 @@ a.nav-links:hover { background: rgba(255,255,255,0.15); color: #fff; }
   text-transform: uppercase;
   padding: 3px 10px;
   border-radius: 20px;
+}
+
+/* ======= CHECKOUT MODAL ======= */
+.checkout-overlay {
+  display: none; position: fixed; inset: 0; z-index: 9999;
+  background: rgba(0,0,0,0.55); backdrop-filter: blur(3px);
+  align-items: center; justify-content: center; padding: 1rem;
+}
+.checkout-overlay.open { display: flex; }
+.checkout-modal {
+  background: #fff; border-radius: 12px; width: 100%; max-width: 520px;
+  max-height: 92vh; overflow-y: auto; padding: 2rem;
+  position: relative; box-shadow: 0 24px 60px rgba(0,0,0,0.2);
+}
+.checkout-close {
+  position: absolute; top: 1rem; right: 1rem;
+  background: var(--gray-1); border: none; border-radius: 50%;
+  width: 32px; height: 32px; font-size: 1rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+.checkout-close:hover { background: var(--gray-2); }
+.checkout-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.25rem; }
+.checkout-brand { font-size: 1.5rem; }
+.checkout-product { flex: 1; }
+.checkout-product-name { font-weight: 700; font-size: var(--h6); }
+.checkout-product-desc { font-size: var(--p-sm); color: var(--gray-3); }
+.checkout-price { font-size: var(--h4); font-weight: 800; color: var(--teal); }
+.checkout-price span { font-size: var(--h6); font-weight: 600; }
+.checkout-divider { height: 1px; background: var(--gray-1); margin: 1.25rem 0; }
+.checkout-section-label { font-size: var(--p-sm); font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--gray-3); margin-bottom: 0.75rem; }
+.checkout-row { display: flex; gap: 0.75rem; }
+.checkout-field { display: flex; flex-direction: column; gap: 0.3rem; margin-bottom: 0.75rem; flex: 1; }
+.checkout-field label { font-size: var(--p-sm); font-weight: 600; color: var(--black); }
+.checkout-field input {
+  padding: 0.6rem 0.85rem; border: 1.5px solid var(--gray-2);
+  border-radius: 6px; font-family: var(--font); font-size: var(--p);
+  transition: border-color 0.15s; outline: none;
+}
+.checkout-field input:focus { border-color: var(--teal); }
+.checkout-shipping { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 0.5rem; }
+.checkout-ship-option {
+  display: flex; align-items: center; gap: 0.75rem;
+  padding: 0.75rem 1rem; border: 1.5px solid var(--gray-2);
+  border-radius: 8px; cursor: pointer; transition: border-color 0.15s;
+}
+.checkout-ship-option:has(input:checked) { border-color: var(--teal); background: rgba(0,150,150,0.04); }
+.checkout-ship-option input[type="radio"] { accent-color: var(--teal); width: 16px; height: 16px; }
+.checkout-ship-box { flex: 1; }
+.checkout-ship-name { font-weight: 600; font-size: var(--p); }
+.checkout-ship-time { font-size: var(--p-sm); color: var(--gray-3); }
+.checkout-ship-price { font-weight: 700; color: var(--black); font-size: var(--p); white-space: nowrap; }
+.checkout-payment-placeholder {
+  display: flex; align-items: center; gap: 1rem;
+  padding: 1rem; background: var(--gray-1); border-radius: 8px;
+  border: 1.5px dashed var(--gray-2);
+}
+.checkout-payment-icon { font-size: 1.5rem; }
+.checkout-payment-title { font-weight: 700; font-size: var(--p); }
+.checkout-payment-sub { font-size: var(--p-sm); color: var(--gray-3); }
+.checkout-summary { background: var(--gray-1); border-radius: 8px; padding: 1rem; margin-bottom: 1.25rem; }
+.checkout-summary-row { display: flex; justify-content: space-between; font-size: var(--p); padding: 0.2rem 0; color: var(--gray-3); }
+.checkout-summary-total { font-weight: 800; font-size: var(--h6); color: var(--black); margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px solid var(--gray-2); }
+.checkout-submit {
+  width: 100%; padding: 0.9rem; background: var(--teal); color: #fff;
+  border: none; border-radius: 8px; font-family: var(--font);
+  font-size: var(--h6); font-weight: 700; cursor: pointer;
+  text-transform: uppercase; letter-spacing: 0.06em;
+  transition: background 0.15s, transform 0.1s;
+}
+.checkout-submit:hover { background: var(--teal-hover); transform: translateY(-1px); }
+.checkout-note { text-align: center; font-size: var(--p-sm); color: var(--gray-3); margin-top: 0.6rem; }
+@media (max-width: 500px) {
+  .checkout-modal { padding: 1.25rem; }
+  .checkout-row { flex-direction: column; gap: 0; }
 }
 
 /* ======= LEAD FORM ======= */
@@ -1488,7 +1568,7 @@ footer {
   <div class="nav-right">
     <a href="#" class="nav-links" onclick="openConfigurator();return false;">Konfigurator</a>
     <a href="#kontakt" class="nav-links">Kontakt</a>
-    <a href="#kontakt" class="nav-cta">Zamów Próbki</a>
+    <a href="#" onclick="openCheckout(); return false;" class="nav-cta">Zamów Próbki</a>
     <div class="hamburger" onclick="toggleMenu()">
       <span></span><span></span><span></span>
     </div>
@@ -1501,7 +1581,7 @@ footer {
   <a href="#proces" onclick="closeMenu()">Jak działamy</a>
   <a href="#" onclick="closeMenu();openConfigurator();return false;">Konfigurator</a>
   <a href="#kontakt" onclick="closeMenu()">Kontakt</a>
-  <a href="#kontakt" onclick="closeMenu()" class="cta">Zamów Próbki</a>
+  <a href="#" onclick="closeMenu(); openCheckout(); return false;" class="cta">Zamów Próbki</a>
 </div>
 
 <!-- HERO -->
@@ -1525,7 +1605,7 @@ footer {
         </a>
       </div>
       <div class="hero-actions">
-        <a href="#kontakt" class="btn-primary">Zamów próbki</a>
+        <a href="#" onclick="openCheckout(); return false;" class="btn-primary">Zamów próbki</a>
         <a href="#" onclick="openConfigurator(); return false;" class="btn-outline">Skonfiguruj produkt</a>
       </div>
     </div>
@@ -1668,7 +1748,7 @@ footer {
     </div>
 
     <div style="text-align:center;margin-top:3rem;padding-top:2.5rem;border-top:1px solid var(--gray-1);">
-      <a href="#kontakt" class="btn-primary" style="font-size:var(--h5);padding:1rem 2.5rem;">Zamów próbki</a>
+      <a href="#" onclick="openCheckout(); return false;" class="btn-primary" style="font-size:var(--h5);padding:1rem 2.5rem;">Zamów próbki</a>
       <p style="margin-top:1rem;font-size:var(--h6);color:#5a5a5a;">Gotowe próbki ze wszystkich kategorii — <strong>99 PLN</strong> odliczane od pierwszej faktury!</p>
     </div>
   </div>
@@ -2037,24 +2117,28 @@ footer {
 
       <div class="form-side">
         <div class="form-title">Zapytaj o wycenę</div>
-        <div class="form-group">
-          <label for="name">Imię i nazwisko</label>
-          <input type="text" id="name" placeholder="Jan Kowalski">
-        </div>
-        <div class="form-group">
-          <label for="email">Adres email</label>
-          <input type="email" id="email" placeholder="jan@firma.pl">
-        </div>
-        <div class="form-group">
-          <label for="phone">Telefon</label>
-          <input type="tel" id="phone" placeholder="+48 000 000 000">
-        </div>
-        <div class="form-group">
-          <label for="message">Dodatkowe informacje</label>
-          <textarea id="message" placeholder="Opisz krótko swój pomysł, smak, specjalne wymagania..."></textarea>
-        </div>
-        <button class="form-submit" type="submit">Wyślij zapytanie o wycenę</button>
-        <p class="form-note">Dane przetwarzamy zgodnie z RODO. Odpowiadamy w ciągu 24 godzin roboczych.</p>
+        <form name="wycena" method="POST" action="/#kontakt" data-netlify="true" data-netlify-honeypot="bot-field">
+          <input type="hidden" name="form-name" value="wycena">
+          <p style="display:none"><input name="bot-field"></p>
+          <div class="form-group">
+            <label for="name">Imię i nazwisko</label>
+            <input type="text" id="name" name="name" placeholder="Jan Kowalski" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Adres email</label>
+            <input type="email" id="email" name="email" placeholder="jan@firma.pl" required>
+          </div>
+          <div class="form-group">
+            <label for="phone">Telefon</label>
+            <input type="tel" id="phone" name="phone" placeholder="+48 000 000 000">
+          </div>
+          <div class="form-group">
+            <label for="message">Dodatkowe informacje</label>
+            <textarea id="message" name="message" placeholder="Opisz krótko swój pomysł, smak, specjalne wymagania..."></textarea>
+          </div>
+          <button class="form-submit" type="submit">Wyślij zapytanie o wycenę</button>
+          <p class="form-note">Dane przetwarzamy zgodnie z RODO. Odpowiadamy w ciągu 24 godzin roboczych.</p>
+        </form>
       </div>
     </div>
   </div>
@@ -2766,6 +2850,153 @@ function closeModal() {
   document.body.style.overflow = '';
 }
 </script>
+
+<script>
+/* ---- CHECKOUT PRÓBKI ---- */
+function openCheckout() {
+  document.getElementById('checkoutOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeCheckout() {
+  document.getElementById('checkoutOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// Aktualizacja sumy przy zmianie kuriera
+var shippingPrices = { inpost: 12.99, dpd: 15.99, poczta: 9.99 };
+var shippingNames  = { inpost: 'InPost Paczkomat', dpd: 'DPD Kurier', poczta: 'Poczta Polska' };
+document.addEventListener('change', function(e) {
+  if (e.target.name === 'shipping') {
+    var val = e.target.value;
+    var ship = shippingPrices[val];
+    var total = (99 + ship).toFixed(2).replace('.', ',');
+    document.getElementById('checkoutShippingRow').innerHTML =
+      '<span>Dostawa (' + shippingNames[val] + ')</span><span>' + ship.toFixed(2).replace('.', ',') + ' PLN</span>';
+    document.getElementById('checkoutTotal').textContent = total + ' PLN';
+  }
+});
+
+function checkoutSubmit(e) {
+  e.preventDefault();
+  // Tu w przyszłości: wywołanie Stripe
+  alert('Wkrótce: przekierowanie do płatności Stripe!');
+}
+</script>
+
+<!-- MODAL: Checkout Próbki -->
+<div class="checkout-overlay" id="checkoutOverlay" onclick="if(event.target===this)closeCheckout()">
+  <div class="checkout-modal">
+    <button class="checkout-close" onclick="closeCheckout()">✕</button>
+
+    <!-- Nagłówek -->
+    <div class="checkout-header">
+      <div class="checkout-brand">🍫 Szef Bez Cukru</div>
+      <div class="checkout-product">
+        <div class="checkout-product-name">Zestaw próbek</div>
+        <div class="checkout-product-desc">Gotowe próbki ze wszystkich kategorii</div>
+      </div>
+      <div class="checkout-price">99 <span>PLN</span></div>
+    </div>
+
+    <div class="checkout-divider"></div>
+
+    <!-- Formularz -->
+    <form id="checkoutForm" onsubmit="checkoutSubmit(event)">
+
+      <div class="checkout-section-label">Dane dostawy</div>
+
+      <div class="checkout-row">
+        <div class="checkout-field">
+          <label>Imię i nazwisko</label>
+          <input type="text" name="checkout-name" placeholder="Jan Kowalski" required>
+        </div>
+        <div class="checkout-field">
+          <label>Telefon</label>
+          <input type="tel" name="checkout-phone" placeholder="+48 000 000 000" required>
+        </div>
+      </div>
+
+      <div class="checkout-field">
+        <label>Adres e-mail</label>
+        <input type="email" name="checkout-email" placeholder="jan@firma.pl" required>
+      </div>
+
+      <div class="checkout-row">
+        <div class="checkout-field" style="flex:2">
+          <label>Ulica i numer</label>
+          <input type="text" name="checkout-street" placeholder="ul. Przykładowa 12/3" required>
+        </div>
+        <div class="checkout-field" style="flex:1">
+          <label>Kod pocztowy</label>
+          <input type="text" name="checkout-zip" placeholder="00-000" required>
+        </div>
+      </div>
+
+      <div class="checkout-field">
+        <label>Miasto</label>
+        <input type="text" name="checkout-city" placeholder="Warszawa" required>
+      </div>
+
+      <div class="checkout-divider"></div>
+      <div class="checkout-section-label">Wybierz dostawę</div>
+
+      <div class="checkout-shipping">
+        <label class="checkout-ship-option">
+          <input type="radio" name="shipping" value="inpost" checked>
+          <div class="checkout-ship-box">
+            <div class="checkout-ship-name">📦 InPost Paczkomat</div>
+            <div class="checkout-ship-time">1–2 dni robocze</div>
+          </div>
+          <div class="checkout-ship-price">12,99 PLN</div>
+        </label>
+        <label class="checkout-ship-option">
+          <input type="radio" name="shipping" value="dpd">
+          <div class="checkout-ship-box">
+            <div class="checkout-ship-name">🚚 DPD Kurier</div>
+            <div class="checkout-ship-time">1 dzień roboczy</div>
+          </div>
+          <div class="checkout-ship-price">15,99 PLN</div>
+        </label>
+        <label class="checkout-ship-option">
+          <input type="radio" name="shipping" value="poczta">
+          <div class="checkout-ship-box">
+            <div class="checkout-ship-name">✉️ Poczta Polska</div>
+            <div class="checkout-ship-time">3–5 dni roboczych</div>
+          </div>
+          <div class="checkout-ship-price">9,99 PLN</div>
+        </label>
+      </div>
+
+      <div class="checkout-divider"></div>
+      <div class="checkout-section-label">Płatność</div>
+
+      <div class="checkout-payment-placeholder">
+        <div class="checkout-payment-icon">🔒</div>
+        <div>
+          <div class="checkout-payment-title">Bezpieczna płatność</div>
+          <div class="checkout-payment-sub">Karta, BLIK, Przelewy24 — wkrótce dostępne</div>
+        </div>
+      </div>
+
+      <div class="checkout-divider"></div>
+
+      <div class="checkout-summary">
+        <div class="checkout-summary-row">
+          <span>Próbki</span><span>99,00 PLN</span>
+        </div>
+        <div class="checkout-summary-row" id="checkoutShippingRow">
+          <span>Dostawa (InPost)</span><span>12,99 PLN</span>
+        </div>
+        <div class="checkout-summary-row checkout-summary-total">
+          <span>Razem</span><span id="checkoutTotal">111,99 PLN</span>
+        </div>
+      </div>
+
+      <button class="checkout-submit" type="submit">Zamów i zapłać →</button>
+      <p class="checkout-note">Zostaniesz przekierowany do bezpiecznej płatności</p>
+    </form>
+  </div>
+</div>
 
 <!-- MODAL: Praliny -->
 <div class="prod-modal-overlay" id="prod-modal" onclick="if(event.target===this)closeModal()">
