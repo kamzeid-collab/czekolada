@@ -924,19 +924,17 @@ footer {
 .prod-modal-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
 
 /* ======= OPINIE ======= */
-#opinie { position: relative; overflow: hidden; }
-.opinie-bg {
-  position: absolute; inset: 0; z-index: 0;
-  background: url('home_schronisko.jpg') right center / cover no-repeat;
-  transform: scaleX(-1);   /* odwrócenie → budynek trafia na lewą stronę */
+#opinie {
+  background: url('home_schronisko.jpg') left center / cover no-repeat;
+  position: relative;
 }
 #opinie::before {
   content: '';
-  position: absolute; inset: 0; z-index: 1;
-  background: linear-gradient(to right, rgba(0,0,0,0) 30%, rgba(10,18,38,0.88) 58%, rgba(10,18,38,0.96) 100%);
+  position: absolute; inset: 0;
+  background: linear-gradient(to right, rgba(0,0,0,0) 40%, rgba(10,18,38,0.92) 62%, rgba(10,18,38,0.97) 100%);
 }
 #opinie .section-wrap {
-  position: relative; z-index: 2;
+  position: relative; z-index: 1;
   display: flex;
   justify-content: flex-end;
 }
@@ -1034,8 +1032,8 @@ footer {
 }
 .opinions-dot.active { background: var(--teal); transform: scale(1.3); }
 @media (max-width: 1024px) {
-  .opinie-bg { background-position: center center; }
-  #opinie::before { background: rgba(10,18,38,0.70); }
+  #opinie { background-position: center center; }
+  #opinie::before { background: rgba(10,18,38,0.72); }
   #opinie .section-wrap { justify-content: center; }
   .opinie-right { width: 100%; padding: 3rem 0; }
 }
@@ -1667,7 +1665,6 @@ footer {
 
 <!-- OPINIE -->
 <section id="opinie">
-  <div class="opinie-bg"></div>
   <div class="section-wrap">
     <div class="opinie-right">
         <div>
