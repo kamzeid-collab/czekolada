@@ -794,10 +794,18 @@ footer {
   .hero-yt-inline { display: block; margin-bottom: 1.5rem; }
   .values-inner { grid-template-columns: repeat(2, 1fr); }
   .products-grid { grid-template-columns: repeat(2, 1fr); }
-  .tiers-grid { display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 1rem; padding-bottom: 1rem; scroll-snap-type: x mandatory; }
-  .tiers-grid::-webkit-scrollbar { height: 4px; }
-  .tiers-grid::-webkit-scrollbar-thumb { background: var(--gray-2); border-radius: 2px; }
-  .tier-card { min-width: 80vw; scroll-snap-align: start; flex-shrink: 0; }
+  #jakosci .section-wrap { overflow: visible; }
+  .tiers-grid {
+    display: flex; flex-wrap: nowrap;
+    overflow-x: auto; overflow-y: visible;
+    gap: 1rem;
+    padding: 0.5rem 1rem 1.25rem;
+    margin: 0 -1rem;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .tiers-grid::-webkit-scrollbar { display: none; }
+  .tier-card { min-width: 72vw; max-width: 72vw; flex-shrink: 0; }
   .process-grid { grid-template-columns: repeat(2, 1fr); gap: 2rem; }
   .process-grid::before { display: none; }
   .segments-grid { grid-template-columns: 1fr; }
