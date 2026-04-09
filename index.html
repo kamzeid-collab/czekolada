@@ -245,6 +245,20 @@ a.nav-links:hover { background: rgba(255,255,255,0.15); color: #fff; }
   display: flex; justify-content: center; align-items: center;
   position: relative;
 }
+.hero-yt-thumb {
+  position: relative; display: block; width: 100%; max-width: 480px;
+  border-radius: var(--radius-card); overflow: hidden;
+  box-shadow: var(--shadow-card);
+}
+.hero-yt-thumb img { display: block; width: 100%; height: auto; }
+.hero-yt-play {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,.35));
+  transition: transform .15s ease;
+}
+.hero-yt-thumb:hover .hero-yt-play { transform: translate(-50%, -50%) scale(1.1); }
 .hero-card-stack { position: relative; width: 100%; max-width: 400px; display: flex; flex-direction: column; gap: 0; padding-top: 16px; padding-right: 16px; overflow: visible; }
 .hero-main-card {
   background: var(--white);
@@ -1335,7 +1349,7 @@ footer {
         z <span>Twoim logo</span>
       </h1>
       <p class="hero-sub" style="font-size:clamp(26px,3.5vw,44px);font-weight:700;color:var(--black);line-height:1.2;letter-spacing:-0.02em;margin-bottom:2rem;">
-        <span style="display:block;">Projekt&emsp;&emsp;Produkcja</span><span style="display:block;text-align:center;">Dostawa</span>
+        PROJEKT PRODUKCJA DOSTAWA
       </p>
       <div class="hero-actions">
         <a href="#kontakt" class="btn-primary">Zamów próbki</a>
@@ -1343,21 +1357,12 @@ footer {
       </div>
     </div>
     <div class="hero-visual">
-      <div class="hero-card-stack">
-        <div class="hero-main-card" style="
-          background-image: url('slider-nowy.png');
-          background-size: 55%;
-          background-repeat: no-repeat;
-          background-position: right -10px center;
-          background-color: var(--white);
-          min-height: 160px;
-          text-align: left;
-          padding: 1rem 1.25rem 1.25rem 1.25rem;
-          position: relative;
-          overflow: visible;
-        ">
-        </div>
-      </div>
+      <a href="#" class="hero-yt-thumb" onclick="return false;" aria-label="Obejrzyj film">
+        <img src="hero-youtube.jpg" alt="Film o czekoladach z logo">
+        <span class="hero-yt-play">
+          <svg viewBox="0 0 68 48" width="68" height="48"><rect width="68" height="48" rx="10" fill="#FF0000" opacity=".9"/><polygon points="27,14 27,34 46,24" fill="#fff"/></svg>
+        </span>
+      </a>
     </div>
   </div>
 </section>
