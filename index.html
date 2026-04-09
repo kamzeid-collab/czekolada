@@ -515,11 +515,27 @@ a.nav-links:hover { background: rgba(255,255,255,0.15); color: #fff; }
 #proces .section-wrap { position: relative; z-index: 1; }
 #proces .section-tag { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.8); }
 #proces .section-title { color: var(--white); }
-#proces .section-sub { color: rgba(255,255,255,0.65); }
-#proces .step-title { color: var(--white); }
-#proces .step-desc { color: rgba(255,255,255,0.65); }
-#proces .step-circle { background: rgba(255,255,255,0.08); border-color: var(--teal); }
-#proces .process-grid::before { background: linear-gradient(to right, var(--teal), rgba(0,150,150,0.3)); }
+#proces .section-title span { color: var(--pink); }
+#proces .section-sub {
+  color: rgba(255,255,255,0.9);
+  background: rgba(0,0,0,0.35);
+  display: inline-block; padding: 0.3rem 0.9rem;
+  border-radius: 6px;
+}
+#proces .step-title {
+  color: var(--white);
+  background: rgba(0,0,0,0.4);
+  display: inline-block; padding: 0.2rem 0.7rem;
+  border-radius: 5px; margin-bottom: 0.5rem;
+}
+#proces .step-desc {
+  color: rgba(255,255,255,0.88);
+  background: rgba(0,0,0,0.38);
+  border-radius: 6px; padding: 0.5rem 0.75rem;
+}
+#proces .step-circle { background: rgba(0,0,0,0.4); border-color: var(--pink); }
+#proces .step-num { color: var(--pink); }
+#proces .process-grid::before { background: linear-gradient(to right, var(--pink), rgba(255,56,105,0.2)); }
 .proces-cta {
   display: flex; justify-content: center; gap: 1rem;
   margin-top: 3rem; flex-wrap: wrap;
