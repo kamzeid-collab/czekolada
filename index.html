@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Własna marka czekolady w 7 dni — Schronisko Bukowina</title>
 <link rel="icon" type="image/png" href="schronisko.png">
+<link rel="stylesheet" href="https://geowidget.inpost.pl/inpost-geowidget.css">
+<script src="https://geowidget.inpost.pl/inpost-geowidget.js" defer></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
@@ -727,6 +729,12 @@ a.nav-links:hover { background: rgba(255,255,255,0.15); color: #fff; }
 .checkout-nip-status.error { color: var(--pink); }
 .checkout-nip-status.loading { color: var(--gray-3); }
 .checkout-ship-free { font-weight: 700; color: var(--teal); font-size: var(--p); white-space: nowrap; }
+/* InPost Geowidget */
+inpost-geowidget { display: block; width: 100%; height: 420px; border-radius: 8px; overflow: hidden; }
+.checkout-point-selected { display: flex; align-items: center; gap: 0.75rem; margin-top: 0.75rem; padding: 0.85rem 1rem; background: rgba(0,150,150,0.06); border: 1.5px solid var(--teal); border-radius: 8px; }
+.checkout-point-icon { font-size: 1.4rem; flex-shrink: 0; }
+.checkout-point-name { font-weight: 700; font-size: var(--p); color: var(--black); }
+.checkout-point-addr { font-size: var(--p-sm); color: var(--gray-3); margin-top: 0.15rem; }
 @media (max-width: 500px) {
   .checkout-modal { padding: 1.25rem; }
   .checkout-row { flex-direction: column; gap: 0; }
@@ -2968,11 +2976,25 @@ function closeModal() {
 </script>
 
 <script>
-/* ---- CHECKOUT PRÓBKI — 3 kroki ---- */
-var co = { shipping: 'inpost' };
+/* ---- CHECKOUT PRÓBKI ---- */
+var co = { shipping: 'inpost', point: null };
+
+// Flow zależy od wyboru kuriera
+var CO_FLOW = {
+  inpost: ['shipping','paczkomat','contact','invoice'],
+  dpd:    ['shipping','contact','invoice']
+};
+var CO_LABELS = {
+  shipping:  'Dostawa',
+  paczkomat: 'Paczkomat',
+  contact:   'Dane',
+  invoice:   'Faktura'
+};
+var co_panel = 'shipping';
 
 function openCheckout() {
-  coGoStep(1);
+  co.point = null;
+  coShowPanel('shipping');
   document.getElementById('checkoutOverlay').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
@@ -2981,26 +3003,80 @@ function closeCheckout() {
   document.body.style.overflow = '';
 }
 
-function coGoStep(n) {
-  [1,2,3].forEach(function(i) {
-    document.getElementById('coStep' + i).style.display = (i === n) ? '' : 'none';
-    var ind = document.getElementById('cStepInd' + i);
-    ind.classList.toggle('active', i === n);
-    ind.classList.toggle('done', i < n);
+function coShowPanel(name) {
+  co_panel = name;
+  var flow = CO_FLOW[co.shipping];
+  var panels = ['shipping','paczkomat','contact','invoice'];
+  panels.forEach(function(p) {
+    document.getElementById('coPanel_' + p).style.display = (p === name) ? '' : 'none';
   });
+  coUpdateStepBar();
   document.querySelector('.checkout-modal').scrollTop = 0;
 
-  if (n === 2) {
-    co.shipping = document.querySelector('input[name="shipping"]:checked').value;
-    document.getElementById('coAddressFields').style.display = (co.shipping === 'dpd') ? '' : 'none';
-  }
-  if (n === 3) {
+  if (name === 'invoice') {
     var names = { inpost: 'InPost Paczkomat', dpd: 'DPD Kurier' };
     document.getElementById('coShippingLabel').textContent = 'GRATIS — ' + names[co.shipping];
   }
 }
 
-function coValidateStep2() {
+function coUpdateStepBar() {
+  var flow   = CO_FLOW[co.shipping];
+  var curIdx = flow.indexOf(co_panel);
+  var bar    = document.getElementById('coStepBar');
+  bar.innerHTML = '';
+  flow.forEach(function(p, i) {
+    var el = document.createElement('div');
+    el.className = 'checkout-step' + (i === curIdx ? ' active' : (i < curIdx ? ' done' : ''));
+    el.textContent = (i + 1) + '. ' + CO_LABELS[p];
+    bar.appendChild(el);
+    if (i < flow.length - 1) {
+      var arr = document.createElement('div');
+      arr.className = 'checkout-step-arrow';
+      arr.textContent = '›';
+      bar.appendChild(arr);
+    }
+  });
+}
+
+function coNext() {
+  var flow   = CO_FLOW[co.shipping];
+  var curIdx = flow.indexOf(co_panel);
+  if (curIdx < flow.length - 1) coShowPanel(flow[curIdx + 1]);
+}
+function coPrev() {
+  var flow   = CO_FLOW[co.shipping];
+  var curIdx = flow.indexOf(co_panel);
+  if (curIdx > 0) coShowPanel(flow[curIdx - 1]);
+}
+
+// KROK: Dostawa
+function coSelectShipping() {
+  co.shipping = document.querySelector('input[name="shipping"]:checked').value;
+  document.getElementById('coAddressFields').style.display = (co.shipping === 'dpd') ? '' : 'none';
+  coNext();
+}
+
+// KROK: Paczkomat — InPost Geowidget callback
+document.addEventListener('DOMContentLoaded', function() {
+  var widget = document.getElementById('inpostWidget');
+  if (!widget) return;
+  widget.addEventListener('pointSelect', function(e) {
+    co.point = e.detail;
+    var addr = (e.detail.address_details || {});
+    var line = [addr.street, addr.building_number, addr.city].filter(Boolean).join(' ');
+    document.getElementById('coPointName').textContent = '📦 ' + e.detail.name;
+    document.getElementById('coPointAddr').textContent = line || (e.detail.address || {}).line1 || '';
+    document.getElementById('coSelectedPoint').style.display = '';
+  });
+});
+
+function coConfirmPoint() {
+  if (!co.point) { alert('Wybierz paczkomat z mapy.'); return; }
+  coNext();
+}
+
+// KROK: Dane kontaktowe
+function coValidateContact() {
   var name  = document.getElementById('coName').value.trim();
   var phone = document.getElementById('coPhone').value.trim();
   var email = document.getElementById('coEmail').value.trim();
@@ -3011,12 +3087,13 @@ function coValidateStep2() {
     var city   = document.getElementById('coCity').value.trim();
     if (!street || !zip || !city) { alert('Wypełnij pełny adres dostawy.'); return; }
   }
-  coGoStep(3);
+  coNext();
 }
 
+// KROK: Faktura
 function coToggleInvoice() {
-  var want = document.getElementById('coWantInvoice').checked;
-  document.getElementById('coInvoiceFields').style.display = want ? '' : 'none';
+  document.getElementById('coInvoiceFields').style.display =
+    document.getElementById('coWantInvoice').checked ? '' : 'none';
 }
 
 async function coLookupNip() {
@@ -3068,19 +3145,13 @@ function coSubmit() {
       <div class="checkout-price">99 <span>PLN</span></div>
     </div>
 
-    <!-- Wskaźnik kroków -->
-    <div class="checkout-steps">
-      <div class="checkout-step active" id="cStepInd1">1. Dostawa</div>
-      <div class="checkout-step-arrow">›</div>
-      <div class="checkout-step" id="cStepInd2">2. Dane</div>
-      <div class="checkout-step-arrow">›</div>
-      <div class="checkout-step" id="cStepInd3">3. Faktura</div>
-    </div>
+    <!-- Dynamiczny wskaźnik kroków -->
+    <div class="checkout-steps" id="coStepBar"></div>
 
     <div class="checkout-divider"></div>
 
-    <!-- KROK 1: Wybór dostawy -->
-    <div id="coStep1">
+    <!-- PANEL: Wybór dostawy -->
+    <div id="coPanel_shipping">
       <div class="checkout-section-label">Wybierz metodę dostawy</div>
       <div class="checkout-shipping">
         <label class="checkout-ship-option">
@@ -3100,12 +3171,35 @@ function coSubmit() {
           <div class="checkout-ship-free">GRATIS</div>
         </label>
       </div>
-      <button class="checkout-submit" style="margin-top:1.25rem" onclick="coGoStep(2)">Dalej →</button>
+      <button class="checkout-submit" style="margin-top:1.25rem" onclick="coSelectShipping()">Dalej →</button>
     </div>
 
-    <!-- KROK 2: Dane dostawy -->
-    <div id="coStep2" style="display:none">
-      <div class="checkout-section-label">Dane dostawy</div>
+    <!-- PANEL: Wybór paczkomatu (InPost Geowidget) -->
+    <div id="coPanel_paczkomat" style="display:none">
+      <div class="checkout-section-label">Wybierz paczkomat</div>
+      <inpost-geowidget
+        id="inpostWidget"
+        token="eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJzQlpXVzFNZzVlQnpDYU1XU3JvTlBjRWFveFpXcW9Ua2FuZVB3X291LWxvIn0.eyJleHAiOjIwOTExMjkxNTYsImlhdCI6MTc3NTc2OTE1NiwianRpIjoiZGE4NDQwNjYtMWY3My00MjBhLWJhMzEtNThkYWU2ODkxZDFhIiwiaXNzIjoiaHR0cHM6Ly9sb2dpbi5pbnBvc3QucGwvYXV0aC9yZWFsbXMvZXh0ZXJuYWwiLCJzdWIiOiJmOjEyNDc1MDUxLTFjMDMtNGU1OS1iYTBjLTJiNDU2OTVlZjUzNTpJM1NPUkhIMzVwdzB1V0c1M3c4b0lNWXdIT3R6QUs4em5GekxCWW9xalBzIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoic2hpcHgiLCJzZXNzaW9uX3N0YXRlIjoiZjA3N2JmZDMtMzUyMy00NDE4LWE4NmQtYjMyMTRhZjJlNWRjIiwic2NvcGUiOiJvcGVuaWQgYXBpOmFwaXBvaW50cyIsInNpZCI6ImYwNzdiZmQzLTM1MjMtNDQxOC1hODZkLWIzMjE0YWYyZTVkYyIsImFsbG93ZWRfcmVmZXJyZXJzIjoic3plZmJlemN1a3J1LnBsIiwidXVpZCI6Ijc3ODI4N2RjLWM2NmEtNDc4ZC1iYjAwLWIzZDEwMWNlMDE2YiJ9.AjIa6urjmMvjj7BW0XYZZBXTF0WWFQFx8ocHZ1To_LYmbJ2WShNLYAKBVhYQmE7pFs9WHitYXH8RSZXfQrJyEbwgHYd208AnLMBRfSDWWmY0wVb1rUb3dLrklawshguPMhOQsdHawAI6Q6xdBXzxKYtCDeplokd9AvArKKH1imSxvR4aISmL4bRz7rFHtaATrjDfNaEa36blxcdmbyiKfU6p7_2usmCsp3DtPRxtr26Fj-il9xulF0jpZBmqO8P1Anb5oq0MpvLDZ1hJfJrnof-vD4A6tO-NYz6izReikOu1CbUA1YUuCJxH1768bMD5QIZk0pXWFIxsSxqmW3sBYw"
+        language="pl"
+        country="PL"
+        config="parcelCollect">
+      </inpost-geowidget>
+      <div id="coSelectedPoint" class="checkout-point-selected" style="display:none">
+        <div class="checkout-point-icon">📦</div>
+        <div>
+          <div class="checkout-point-name" id="coPointName"></div>
+          <div class="checkout-point-addr" id="coPointAddr"></div>
+        </div>
+      </div>
+      <div class="checkout-nav" style="margin-top:0.75rem">
+        <button class="checkout-btn-back" onclick="coPrev()">← Wstecz</button>
+        <button class="checkout-submit" style="flex:1" onclick="coConfirmPoint()">Dalej →</button>
+      </div>
+    </div>
+
+    <!-- PANEL: Dane kontaktowe -->
+    <div id="coPanel_contact" style="display:none">
+      <div class="checkout-section-label">Dane kontaktowe</div>
       <div class="checkout-row">
         <div class="checkout-field">
           <label>Imię i nazwisko *</label>
@@ -3120,8 +3214,7 @@ function coSubmit() {
         <label>Adres e-mail *</label>
         <input type="email" id="coEmail" placeholder="jan@firma.pl">
       </div>
-      <!-- Adres tylko dla DPD -->
-      <div id="coAddressFields">
+      <div id="coAddressFields" style="display:none">
         <div class="checkout-row">
           <div class="checkout-field" style="flex:2">
             <label>Ulica i numer *</label>
@@ -3138,19 +3231,18 @@ function coSubmit() {
         </div>
       </div>
       <div class="checkout-nav">
-        <button class="checkout-btn-back" onclick="coGoStep(1)">← Wstecz</button>
-        <button class="checkout-submit" style="flex:1" onclick="coValidateStep2()">Dalej →</button>
+        <button class="checkout-btn-back" onclick="coPrev()">← Wstecz</button>
+        <button class="checkout-submit" style="flex:1" onclick="coValidateContact()">Dalej →</button>
       </div>
     </div>
 
-    <!-- KROK 3: Faktura + podsumowanie -->
-    <div id="coStep3" style="display:none">
+    <!-- PANEL: Faktura + podsumowanie -->
+    <div id="coPanel_invoice" style="display:none">
       <div class="checkout-section-label">Dane do faktury</div>
       <label class="checkout-invoice-toggle">
         <input type="checkbox" id="coWantInvoice" onchange="coToggleInvoice()">
         <span>Chcę fakturę VAT</span>
       </label>
-
       <div id="coInvoiceFields" style="display:none; margin-top:1rem">
         <div class="checkout-nip-row">
           <div class="checkout-field" style="flex:1; margin-bottom:0">
@@ -3169,15 +3261,12 @@ function coSubmit() {
           <input type="text" id="coCompanyAddr" placeholder="ul. Przykładowa 1, 00-000 Warszawa">
         </div>
       </div>
-
       <div class="checkout-divider"></div>
-
       <div class="checkout-summary">
         <div class="checkout-summary-row"><span>Próbki</span><span>99,00 PLN</span></div>
         <div class="checkout-summary-row"><span>Dostawa</span><span id="coShippingLabel">GRATIS</span></div>
         <div class="checkout-summary-row checkout-summary-total"><span>Razem</span><span>99,00 PLN</span></div>
       </div>
-
       <div class="checkout-payment-placeholder">
         <div class="checkout-payment-icon">🔒</div>
         <div>
@@ -3185,9 +3274,8 @@ function coSubmit() {
           <div class="checkout-payment-sub">Karta, BLIK, Przelewy24 — wkrótce dostępne</div>
         </div>
       </div>
-
       <div class="checkout-nav">
-        <button class="checkout-btn-back" onclick="coGoStep(2)">← Wstecz</button>
+        <button class="checkout-btn-back" onclick="coPrev()">← Wstecz</button>
         <button class="checkout-submit" style="flex:1" onclick="coSubmit()">Zamów i zapłać →</button>
       </div>
       <p class="checkout-note">Zostaniesz przekierowany do bezpiecznej płatności</p>
