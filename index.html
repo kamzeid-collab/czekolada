@@ -121,10 +121,13 @@ a.nav-links:hover { background: rgba(255,255,255,0.15); color: #fff; }
   width: auto;
   display: block;
   transition: transform 0.15s;
+  border: none;
+  outline: none;
+  box-shadow: none;
 }
 .nav-logo-center img:hover { transform: scale(1.03); }
-.nav-left { display: flex; align-items: center; gap: 0.25rem; flex: 1; justify-content: flex-end; padding-right: 3.5rem; }
-.nav-right { display: flex; align-items: center; gap: 0.25rem; flex: 1; justify-content: flex-start; padding-left: 3.5rem; }
+.nav-left { display: flex; align-items: center; gap: 0.25rem; flex: 1; justify-content: flex-end; padding-right: 5.5rem; }
+.nav-right { display: flex; align-items: center; gap: 0.25rem; flex: 1; justify-content: flex-start; padding-left: 5.5rem; }
 .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
 .hamburger span { width: 22px; height: 2px; background: #fff; display: block; }
 
@@ -1471,8 +1474,8 @@ footer {
 <nav>
   <!-- LEFT LINKS -->
   <div class="nav-left">
-    <a href="#produkty" class="nav-links">Produkty</a>
-    <a href="#jakosci" class="nav-links">Klasy jakości</a>
+    <a href="#produkty" class="nav-links">Produkt</a>
+    <a href="#jakosci" class="nav-links">Jakość</a>
     <a href="#proces" class="nav-links">Jak działamy</a>
   </div>
 
@@ -1483,9 +1486,9 @@ footer {
 
   <!-- RIGHT LINKS -->
   <div class="nav-right">
-    <a href="#segmenty" class="nav-links">Dla kogo</a>
+    <a href="#" class="nav-links" onclick="openConfigurator();return false;">Konfigurator</a>
     <a href="#kontakt" class="nav-links">Kontakt</a>
-    <a href="#kontakt" class="nav-cta">Zapytaj o wycenę</a>
+    <a href="#kontakt" class="nav-cta">Zamów Próbki</a>
     <div class="hamburger" onclick="toggleMenu()">
       <span></span><span></span><span></span>
     </div>
@@ -1493,11 +1496,12 @@ footer {
 </nav>
 
 <div class="mobile-menu" id="mobileMenu">
-  <a href="#produkty" onclick="closeMenu()">Produkty</a>
-  <a href="#jakosci" onclick="closeMenu()">Klasy jakości</a>
+  <a href="#produkty" onclick="closeMenu()">Produkt</a>
+  <a href="#jakosci" onclick="closeMenu()">Jakość</a>
   <a href="#proces" onclick="closeMenu()">Jak działamy</a>
-  <a href="#segmenty" onclick="closeMenu()">Dla kogo</a>
-  <a href="#kontakt" onclick="closeMenu()" class="cta">Zapytaj o wycenę</a>
+  <a href="#" onclick="closeMenu();openConfigurator();return false;">Konfigurator</a>
+  <a href="#kontakt" onclick="closeMenu()">Kontakt</a>
+  <a href="#kontakt" onclick="closeMenu()" class="cta">Zamów Próbki</a>
 </div>
 
 <!-- HERO -->
