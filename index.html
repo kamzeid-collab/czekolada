@@ -411,13 +411,15 @@ a.nav-links:hover { background: rgba(255,255,255,0.15); color: #fff; }
 .product-img-3 { background: linear-gradient(135deg, #e8f5e8 0%, #cce8cc 100%); }
 .product-img-4 { background: linear-gradient(135deg, #e8f0f5 0%, #ccdde8 100%); }
 .product-tag-pill {
-  position: absolute; top: 10px; left: 10px;
+  position: absolute;
   background: var(--teal);
   color: var(--white);
   font-size: 10px; font-weight: 700;
   letter-spacing: 0.08em; text-transform: uppercase;
   padding: 3px 8px;
   border-radius: 4px;
+  align-self: flex-start;
+  height: fit-content;
 }
 .product-body { padding: 1rem 1.1rem 1.25rem; }
 .product-name {
@@ -501,7 +503,40 @@ a.nav-links:hover { background: rgba(255,255,255,0.15); color: #fff; }
 .tier-cta { display: block; text-align: center; }
 
 /* ======= PROCESS ======= */
-#proces { background: var(--white); }
+#proces {
+  background: url('proces.jpeg') center/cover no-repeat;
+  position: relative;
+}
+#proces::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: rgba(0,0,0,0.62);
+}
+#proces .section-wrap { position: relative; z-index: 1; }
+#proces .section-tag { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.8); }
+#proces .section-title { color: var(--white); }
+#proces .section-sub { color: rgba(255,255,255,0.65); }
+#proces .step-title { color: var(--white); }
+#proces .step-desc { color: rgba(255,255,255,0.65); }
+#proces .step-circle { background: rgba(255,255,255,0.08); border-color: var(--teal); }
+#proces .process-grid::before { background: linear-gradient(to right, var(--teal), rgba(0,150,150,0.3)); }
+.proces-cta {
+  display: flex; justify-content: center; gap: 1rem;
+  margin-top: 3rem; flex-wrap: wrap;
+}
+.btn-outline-light {
+  border: 2px solid rgba(255,255,255,0.6);
+  color: var(--white);
+  background: transparent;
+  padding: 0.75rem 2rem;
+  border-radius: var(--radius-btn);
+  font-size: var(--p); font-weight: 700;
+  letter-spacing: 0.04em; text-transform: uppercase;
+  cursor: pointer; text-decoration: none;
+  transition: background 0.2s, border-color 0.2s;
+  display: inline-block;
+}
+.btn-outline-light:hover { background: rgba(255,255,255,0.12); border-color: var(--white); }
 .process-grid {
   display: grid; grid-template-columns: repeat(4, 1fr);
   gap: 2rem;
@@ -1832,6 +1867,10 @@ footer {
         <p class="step-desc">Zamówienie gotowe w 7–14 dni. Dostawa kurierem do całej Polski lub odbiór osobisty z fabryki.</p>
       </div>
     </div>
+    <div class="proces-cta">
+      <a href="#" class="btn-primary" onclick="openConfigurator(); return false;">Zrób to sam</a>
+      <a href="#" class="btn-outline-light" onclick="openCallpage(); return false;">Zamów kontakt</a>
+    </div>
   </div>
 </section>
 
@@ -2618,6 +2657,12 @@ function cfgSubmit() {
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') { closeConfigurator(); closeModal(); }
 });
+
+/* ---- CALLPAGE (placeholder) ---- */
+function openCallpage() {
+  // Tu podepnij widget CallPage gdy będzie gotowy
+  alert('CallPage — wkrótce dostępne!');
+}
 
 /* ---- EXPANDABLE ---- */
 function toggleExpand() {
