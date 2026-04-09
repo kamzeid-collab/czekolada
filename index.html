@@ -71,21 +71,20 @@ body {
 .topbar-right a { color: var(--gray-3); text-decoration: none; font-size: var(--p-sm); transition: color 0.15s; }
 .topbar-right a:hover { color: var(--teal); }
 
-/* ======= NAV (biały jak schroniskobukowina.pl) ======= */
+/* ======= NAV (turkusowy pasek jak w brandbooku) ======= */
 nav {
-  background: var(--white);
+  background: var(--teal);
   position: sticky; top: 0; z-index: 100;
   display: flex; align-items: center; justify-content: space-between;
   padding: 0 2.5rem;
-  height: 64px;
-  border-bottom: 1px solid var(--gray-1);
-  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+  height: 56px;
+  box-shadow: 0 2px 8px rgba(0,150,150,0.18);
   overflow: visible;
 }
 .nav-links { display: flex; align-items: center; gap: 0.25rem; }
 .nav-links a,
 a.nav-links {
-  color: #101828;
+  color: rgba(255,255,255,0.88);
   text-decoration: none;
   font-size: var(--h6);
   font-weight: 600;
@@ -96,10 +95,10 @@ a.nav-links {
   display: inline-block;
 }
 .nav-links a:hover, .nav-links a.active,
-a.nav-links:hover { background: rgba(0,150,150,0.08); color: var(--teal); }
+a.nav-links:hover { background: rgba(255,255,255,0.15); color: #fff; }
 .nav-cta {
-  background: var(--teal);
-  color: var(--white);
+  background: var(--white);
+  color: var(--teal);
   text-decoration: none;
   padding: 0.45rem 1.25rem;
   border-radius: var(--radius-btn);
@@ -109,16 +108,16 @@ a.nav-links:hover { background: rgba(0,150,150,0.08); color: var(--teal); }
   white-space: nowrap;
   letter-spacing: 0.01em;
 }
-.nav-cta:hover { background: var(--teal-dark); transform: translateY(-1px); }
+.nav-cta:hover { background: var(--gray-1); transform: translateY(-1px); }
 .nav-logo-center {
   position: absolute; left: 50%; transform: translateX(-50%);
   display: flex; align-items: center; justify-content: center;
   pointer-events: auto;
   z-index: 10;
-  top: -22px;
+  top: -28px;
 }
 .nav-logo-center img {
-  height: 100px;
+  height: 110px;
   width: auto;
   display: block;
   transition: transform 0.15s;
@@ -127,7 +126,7 @@ a.nav-links:hover { background: rgba(0,150,150,0.08); color: var(--teal); }
 .nav-left { display: flex; align-items: center; gap: 0.25rem; flex: 1; justify-content: flex-end; padding-right: 3.5rem; }
 .nav-right { display: flex; align-items: center; gap: 0.25rem; flex: 1; justify-content: flex-start; padding-left: 3.5rem; }
 .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
-.hamburger span { width: 22px; height: 2px; background: var(--teal); display: block; }
+.hamburger span { width: 22px; height: 2px; background: #fff; display: block; }
 
 /* ======= HERO ======= */
 #hero {
@@ -765,7 +764,7 @@ footer {
 /* ======= MOBILE MENU ======= */
 .mobile-menu {
   display: none; flex-direction: column; gap: 0;
-  position: fixed; top: 64px; left: 0; right: 0;
+  position: fixed; top: 52px; left: 0; right: 0;
   background: var(--white); z-index: 99;
   border-bottom: 1px solid var(--gray-1);
   box-shadow: 0 4px 16px rgba(0,0,0,0.1);
@@ -925,21 +924,35 @@ footer {
 .prod-modal-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
 
 /* ======= OPINIE ======= */
-#opinie {
-  background: url('home_schronisko.jpg') center/cover no-repeat;
-  position: relative;
+#opinie { background: var(--navy); overflow: hidden; }
+#opinie .section-wrap { padding: 0; max-width: 100%; }
+.opinie-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 580px;
 }
-#opinie::before {
-  content: '';
-  position: absolute; inset: 0;
-  background: rgba(0,0,0,0.68);
+.opinie-photo {
+  overflow: hidden;
 }
-#opinie .section-wrap { position: relative; z-index: 1; }
+.opinie-photo img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: 80% center;
+  display: block;
+}
+.opinie-right {
+  padding: 4rem 3.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.5rem;
+}
+.opinie-right .section-tag { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.8); }
+.opinie-right .section-title { color: var(--white); margin-bottom: 0.5rem; }
+.opinie-right .section-sub { color: rgba(255,255,255,0.6); margin-bottom: 0.5rem; }
 .opinions-slider-wrap {
   position: relative;
   overflow: hidden;
-  max-width: 780px;
-  margin: 0 auto;
 }
 .opinions-track {
   display: flex;
@@ -947,19 +960,19 @@ footer {
 }
 .opinion-card {
   flex: 0 0 100%;
-  border-radius: 16px;
+  border-radius: 12px;
   overflow: hidden;
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.1);
-  box-shadow: 0 8px 40px rgba(0,0,0,0.35);
+  background: var(--white);
+  border: 1px solid var(--gray-1);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.12);
 }
 .opinion-inner {
   display: grid;
-  grid-template-columns: 1fr 220px;
-  min-height: 260px;
+  grid-template-columns: 1fr 160px;
+  min-height: 220px;
 }
 .opinion-content {
-  padding: 2.25rem 2.5rem;
+  padding: 1.75rem 2rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -969,46 +982,45 @@ footer {
   overflow: hidden;
 }
 .opinion-product-img {
-  width: 100%;
-  height: 100%;
+  width: 100%; height: 100%;
   object-fit: cover;
   display: block;
 }
 .opinion-quote {
-  font-size: var(--h6);
-  color: rgba(255,255,255,0.85);
-  line-height: 1.75;
-  margin-bottom: 1.5rem;
+  font-size: var(--p);
+  color: #333;
+  line-height: 1.7;
+  margin-bottom: 1.25rem;
   font-style: italic;
   flex: 1;
 }
 .opinion-author {
   display: flex;
   align-items: center;
-  gap: 0.85rem;
+  gap: 0.75rem;
 }
 .opinion-photo {
-  width: 44px; height: 44px;
+  width: 40px; height: 40px;
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid var(--teal);
   flex-shrink: 0;
 }
-.opinion-name { font-size: var(--p); font-weight: 700; color: var(--white); }
-.opinion-role { font-size: var(--p-sm); color: rgba(255,255,255,0.45); margin-top: 2px; }
-.opinions-stars { display: flex; gap: 2px; margin-bottom: 1rem; }
+.opinion-name { font-size: var(--p); font-weight: 700; color: var(--black); }
+.opinion-role { font-size: var(--p-sm); color: var(--gray-3); margin-top: 2px; }
+.opinions-stars { display: flex; gap: 2px; margin-bottom: 0.75rem; }
 .opinions-stars span { color: var(--amber); font-size: 1rem; }
 .opinions-nav {
-  display: flex; justify-content: center; align-items: center;
-  gap: 1rem; margin-top: 2rem;
+  display: flex; justify-content: flex-start; align-items: center;
+  gap: 1rem; margin-top: 1rem;
 }
 .opinions-btn {
-  width: 40px; height: 40px;
+  width: 38px; height: 38px;
   border-radius: 50%;
-  border: 2px solid rgba(255,255,255,0.2);
-  background: rgba(255,255,255,0.07);
-  color: rgba(255,255,255,0.65);
-  font-size: 1.1rem; cursor: pointer;
+  border: 2px solid rgba(255,255,255,0.25);
+  background: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.75);
+  font-size: 1rem; cursor: pointer;
   display: flex; align-items: center; justify-content: center;
   transition: background 0.15s, color 0.15s, border-color 0.15s;
 }
@@ -1016,14 +1028,19 @@ footer {
 .opinions-dots { display: flex; gap: 8px; }
 .opinions-dot {
   width: 8px; height: 8px; border-radius: 50%;
-  background: rgba(255,255,255,0.2); cursor: pointer;
+  background: rgba(255,255,255,0.25); cursor: pointer;
   transition: background 0.2s, transform 0.2s;
 }
 .opinions-dot.active { background: var(--teal); transform: scale(1.3); }
+@media (max-width: 1024px) {
+  .opinie-layout { grid-template-columns: 1fr; }
+  .opinie-photo { height: 280px; }
+  .opinie-right { padding: 2.5rem 1.5rem; }
+}
 @media (max-width: 640px) {
   .opinion-inner { grid-template-columns: 1fr; }
-  .opinion-product { height: 180px; }
-  .opinion-content { padding: 1.5rem; }
+  .opinion-product { height: 160px; }
+  .opinion-content { padding: 1.25rem 1.5rem; }
 }
 
 /* ======= TICKER ======= */
@@ -1649,12 +1666,19 @@ footer {
 <!-- OPINIE -->
 <section id="opinie">
   <div class="section-wrap">
-    <div class="section-header-center">
-      <span class="section-tag" style="background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.8);">Opinie klient&#xF3;w</span>
-      <h2 class="section-title" style="color:var(--white);">Co m&#xF3;wi&#x105; o nas <span>nasi klienci</span></h2>
-      <p class="section-sub" style="color:rgba(255,255,255,0.6);">Zaufali nam liderzy z najwi&#x119;kszych firm w Polsce.</p>
-    </div>
-    <div class="opinions-slider-wrap">
+    <div class="opinie-layout">
+      <!-- LEWO: zdjęcie budynku -->
+      <div class="opinie-photo">
+        <img src="home_schronisko.jpg" alt="Schronisko Bukowina">
+      </div>
+      <!-- PRAWO: nagłówek + slider -->
+      <div class="opinie-right">
+        <div>
+          <span class="section-tag">Opinie klientów</span>
+          <h2 class="section-title" style="color:var(--white);margin-top:0.75rem;">Co mówią o nas <span>nasi klienci</span></h2>
+          <p class="section-sub" style="color:rgba(255,255,255,0.6);">Zaufali nam liderzy z największych firm w Polsce.</p>
+        </div>
+        <div class="opinions-slider-wrap">
       <div class="opinions-track" id="opinionsTrack">
 
         <div class="opinion-card">
@@ -1765,6 +1789,8 @@ footer {
       </div>
       <button class="opinions-btn" onclick="opinionsMove(1)" title="Następna">&#8594;</button>
     </div>
+      </div><!-- /opinie-right -->
+    </div><!-- /opinie-layout -->
   </div>
 </section>
 
