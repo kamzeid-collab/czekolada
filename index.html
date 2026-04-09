@@ -1330,6 +1330,15 @@ footer {
 }
 .cfg-options.cols2 { grid-template-columns: 1fr 1fr; }
 .cfg-options.cols3 { grid-template-columns: repeat(3, 1fr); }
+.cfg-options.cols4 { grid-template-columns: repeat(4, 1fr); gap: 0.5rem; }
+.cfg-options.cols4 .cfg-opt { padding: 0.65rem 0.4rem; text-align: center; }
+.cfg-options.cols4 .cfg-opt-icon { font-size: 22px; margin-bottom: 0.25rem; }
+.cfg-options.cols4 .cfg-opt-name { font-size: 11px; line-height: 1.3; }
+.cfg-options.cols4 .cfg-opt-desc { display: none; }
+.cfg-options.cols4 .cfg-opt-price { font-size: 10px; margin-top: 0.25rem; }
+.cfg-add-another-btn { width:100%; padding:0.75rem; background:transparent; border:2px dashed var(--teal); border-radius:8px; color:var(--teal); font-family:var(--font); font-size:var(--p); font-weight:700; cursor:pointer; transition:background 0.15s; }
+.cfg-add-another-btn:hover { background:rgba(0,150,150,0.06); }
+.cfg-saved-product { display:flex; align-items:center; justify-content:space-between; padding:0.6rem 0.85rem; background:rgba(0,150,150,0.06); border:1.5px solid var(--teal); border-radius:6px; margin-bottom:0.4rem; font-size:var(--p-sm); font-weight:600; }
 
 .cfg-opt {
   border: 2px solid var(--gray-1);
@@ -1558,6 +1567,7 @@ footer {
 @media (max-width: 640px) {
   .cfg-options.cols2,
   .cfg-options.cols3 { grid-template-columns: 1fr; }
+  .cfg-options.cols4 { grid-template-columns: repeat(2, 1fr); }
   .cfg-contact-form  { grid-template-columns: 1fr; }
   .cfg-price-box     { flex-direction: column; align-items: flex-start; gap: 0.25rem; }
 }
@@ -2436,7 +2446,6 @@ document.addEventListener('click', function(e) {
             <div class="cfg-dot" data-dot="3"></div>
             <div class="cfg-dot" data-dot="4"></div>
             <div class="cfg-dot" data-dot="5"></div>
-            <div class="cfg-dot" data-dot="6"></div>
           </div>
           <button class="cfg-close" onclick="closeConfigurator()" title="Zamknij">✕</button>
         </div>
@@ -2450,13 +2459,12 @@ document.addEventListener('click', function(e) {
       <div class="cfg-step active" id="cfgS1">
         <div class="cfg-step-title">Jaki produkt Cię interesuje?</div>
         <div class="cfg-step-sub">Wybierz kategorię produktu z logo Twojej firmy.</div>
-        <div class="cfg-options cols3">
+        <div class="cfg-options cols4">
 
           <div class="cfg-opt" data-key="product" data-val="czekolada" onclick="cfgSelect(this)">
             <div class="cfg-opt-check">✓</div>
             <div class="cfg-opt-icon">🍫</div>
             <div class="cfg-opt-name">Czekolady & Tabliczki</div>
-            <div class="cfg-opt-desc">Ciemna, mleczna, biała. Z bakaliami, liofilizatami lub bez.</div>
             <div class="cfg-opt-price">od 6,50 PLN/szt</div>
           </div>
 
@@ -2464,7 +2472,6 @@ document.addEventListener('click', function(e) {
             <div class="cfg-opt-check">✓</div>
             <div class="cfg-opt-icon">🎁</div>
             <div class="cfg-opt-name">Praliny Rzemieślnicze</div>
-            <div class="cfg-opt-desc">Ekskluzywne praliny w personalizowanych pudełkach.</div>
             <div class="cfg-opt-price">od 10,00 PLN/szt</div>
           </div>
 
@@ -2472,7 +2479,6 @@ document.addEventListener('click', function(e) {
             <div class="cfg-opt-check">✓</div>
             <div class="cfg-opt-icon">🍬</div>
             <div class="cfg-opt-name">Batony & Przekąski</div>
-            <div class="cfg-opt-desc">Batony zbożowe, energetyczne i owocowe w folii.</div>
             <div class="cfg-opt-price">od 4,20 PLN/szt</div>
           </div>
 
@@ -2480,7 +2486,6 @@ document.addEventListener('click', function(e) {
             <div class="cfg-opt-check">✓</div>
             <div class="cfg-opt-icon">🍓</div>
             <div class="cfg-opt-name">Bakalie & Owoce</div>
-            <div class="cfg-opt-desc">Orzechy, suszone owoce i liofilizaty w personalizowanych torebkach.</div>
             <div class="cfg-opt-price">od 5,80 PLN/szt</div>
           </div>
 
@@ -2577,43 +2582,8 @@ document.addEventListener('click', function(e) {
         <button class="cfg-no-logo-btn" id="cfgNoLogoBtn" onclick="cfgNoLogo()">Nie mam logo / zamówię bez logo</button>
       </div>
 
-      <!-- KROK 5: Dodaj kolejny produkt -->
+      <!-- KROK 5: Wycena i dane -->
       <div class="cfg-step" id="cfgS5">
-        <div class="cfg-step-title">Chcesz dodać kolejny produkt?</div>
-        <div class="cfg-step-sub">Możesz skonfigurować kilka produktów w jednym zapytaniu.</div>
-
-        <div id="cfgExtraList" style="display:none;margin-bottom:1rem;"></div>
-
-        <div class="cfg-options cols3" id="cfgExtraOpts">
-          <div class="cfg-opt" data-key="extra" data-val="czekolada" onclick="cfgAddExtra(this)">
-            <div class="cfg-opt-icon">🍫</div>
-            <div class="cfg-opt-name">Czekolady & Tabliczki</div>
-            <div class="cfg-opt-price">od 6,50 PLN/szt</div>
-          </div>
-          <div class="cfg-opt" data-key="extra" data-val="praliny" onclick="cfgAddExtra(this)">
-            <div class="cfg-opt-icon">🎁</div>
-            <div class="cfg-opt-name">Praliny Rzemieślnicze</div>
-            <div class="cfg-opt-price">od 10,00 PLN/szt</div>
-          </div>
-          <div class="cfg-opt" data-key="extra" data-val="batony" onclick="cfgAddExtra(this)">
-            <div class="cfg-opt-icon">🍬</div>
-            <div class="cfg-opt-name">Batony & Przekąski</div>
-            <div class="cfg-opt-price">od 4,20 PLN/szt</div>
-          </div>
-          <div class="cfg-opt" data-key="extra" data-val="bakalie" onclick="cfgAddExtra(this)">
-            <div class="cfg-opt-icon">🍓</div>
-            <div class="cfg-opt-name">Bakalie & Owoce</div>
-            <div class="cfg-opt-price">od 5,80 PLN/szt</div>
-          </div>
-        </div>
-
-        <div style="margin-top:1rem;padding:1rem;background:var(--gray-1);border-radius:8px;font-size:var(--p-sm);color:var(--gray-3);text-align:center;">
-          Nie chcesz dodawać więcej? Kliknij <strong>Dalej →</strong> żeby przejść do danych kontaktowych.
-        </div>
-      </div>
-
-      <!-- KROK 6: Wycena i dane -->
-      <div class="cfg-step" id="cfgS6">
         <div class="cfg-step-title">Podsumowanie i wycena</div>
         <div class="cfg-step-sub">Sprawdź konfigurację i podaj dane kontaktowe, by otrzymać ofertę.</div>
 
@@ -2673,6 +2643,14 @@ document.addEventListener('click', function(e) {
         </div>
         <div style="font-size:var(--p-sm);color:var(--gray-3);margin-bottom:1.25rem;">* Wycena orientacyjna. Ostateczna cena zależy od aktualnych kosztów surowców i terminu realizacji. Otrzymasz dokładną wycenę w ciągu 24h.</div>
 
+        <!-- Skonfigurowane produkty -->
+        <div id="cfgProductsList"></div>
+
+        <!-- Dodaj kolejny produkt -->
+        <button class="cfg-add-another-btn" onclick="cfgAddAnother()">＋ Dodaj kolejny produkt</button>
+
+        <div style="height:1px;background:var(--gray-1);margin:1.25rem 0;"></div>
+
         <!-- Dane kontaktowe -->
         <div style="font-size:var(--p);font-weight:700;color:var(--black);margin-bottom:0.75rem;">Twoje dane kontaktowe</div>
         <div class="cfg-contact-form">
@@ -2711,8 +2689,8 @@ document.addEventListener('click', function(e) {
 // ===== KONFIGURATOR =====
 var cfg = {
   step: 1,
-  totalSteps: 6,
-  extraProducts: [],
+  totalSteps: 5,
+  savedProducts: [],
   selections: { product: null, quality: null, print: null, logo: null },
   qty: 250,
   logoFile: null,
@@ -2751,6 +2729,10 @@ var cfg = {
 };
 
 function openConfigurator() {
+  cfg.savedProducts = [];
+  cfg.selections = { product: null, quality: null, print: null, logo: null };
+  cfg.qty = 250;
+  document.querySelectorAll('.cfg-opt.selected').forEach(function(el) { el.classList.remove('selected'); });
   document.getElementById('cfgOverlay').classList.add('open');
   document.body.style.overflow = 'hidden';
   cfgGoTo(1);
@@ -2784,7 +2766,7 @@ function cfgUpdateNext() {
   if (step === 2 && !cfg.selections.quality)  ok = false;
   if (step === 3 && !cfg.selections.print)    ok = false;
   if (step === 4 && cfg.selections.logo === null) ok = false;
-  // krok 5 (dodaj produkt) zawsze ok — można pominąć
+  // krok 5 — zawsze ok (ilość ustawiona)
   btn.disabled = !ok;
 }
 
@@ -2850,8 +2832,8 @@ function cfgGoTo(n) {
     cfgFillSummary();
   }
 
-  // krok 5 — odśwież listę dodanych produktów
-  if (n === 5) cfgRenderExtraList();
+  // krok 5 — odśwież listę skonfigurowanych produktów
+  if (n === 5) cfgRenderSavedProducts();
 
   cfgUpdateNext();
   cfgUpdatePrice();
@@ -2867,8 +2849,7 @@ function cfgFillSummary() {
     print:    { brak: 'Bez nadruku', standard: 'Nadruk Standard', premium: 'Nadruk Premium' }
   };
   var s = cfg.selections;
-  var extraStr = cfg.extraProducts.length ? ' + ' + cfg.extraProducts.map(function(v){ return labels.product[v]; }).join(', ') : '';
-  document.getElementById('sProduct').textContent  = (labels.product[s.product] || '—') + extraStr;
+  document.getElementById('sProduct').textContent  = labels.product[s.product]  || '—';
   document.getElementById('sQuality').textContent  = labels.quality[s.quality]  || '—';
   document.getElementById('sPrint').textContent    = labels.print[s.print]      || '—';
   document.getElementById('sLogo').textContent     = (s.logo === 'plik') ? (cfg.logoFile ? cfg.logoFile.name : 'Plik wgrany') : 'Bez logo';
@@ -2977,43 +2958,50 @@ function cfgNoLogo() {
 }
 
 // submit
-var cfgExtraNames = { czekolada: 'Czekolady & Tabliczki', praliny: 'Praliny Rzemieślnicze', batony: 'Batony & Przekąski', bakalie: 'Bakalie & Owoce' };
-var cfgExtraIcons = { czekolada: '🍫', praliny: '🎁', batony: '🍬', bakalie: '🍓' };
+var CFG_NAMES = { czekolada: 'Czekolady & Tabliczki', praliny: 'Praliny Rzemieślnicze', batony: 'Batony & Przekąski', bakalie: 'Bakalie & Owoce' };
+var CFG_ICONS = { czekolada: '🍫', praliny: '🎁', batony: '🍬', bakalie: '🍓' };
 
-function cfgAddExtra(el) {
-  var val = el.dataset.val;
-  // nie dodawaj duplikatu ani głównego produktu
-  if (val === cfg.selections.product) {
-    el.style.opacity = '0.4';
-    setTimeout(function() { el.style.opacity = ''; }, 600);
-    return;
-  }
-  if (cfg.extraProducts.indexOf(val) === -1) {
-    cfg.extraProducts.push(val);
-  }
-  cfgRenderExtraList();
+function cfgSaveCurrentProduct() {
+  var s = cfg.selections;
+  cfg.savedProducts.push({
+    product: s.product, quality: s.quality, print: s.print,
+    logo: s.logo, qty: cfg.qty,
+    label: CFG_NAMES[s.product]
+  });
 }
 
-function cfgRemoveExtra(val) {
-  cfg.extraProducts = cfg.extraProducts.filter(function(v) { return v !== val; });
-  cfgRenderExtraList();
+function cfgAddAnother() {
+  // zapisz aktualny produkt
+  cfgSaveCurrentProduct();
+  // resetuj wybory
+  cfg.selections = { product: null, quality: null, print: null, logo: null };
+  cfg.qty = 250;
+  cfg.logoFile = null;
+  // odznacz wszystkie kafelki
+  document.querySelectorAll('.cfg-opt.selected').forEach(function(el) { el.classList.remove('selected'); });
+  // reset logo
+  document.getElementById('cfgNoLogoBtn').classList.remove('active');
+  document.getElementById('cfgUploadPreview').style.display = 'none';
+  document.getElementById('cfgFileInput').value = '';
+  // wróć do kroku 1
+  cfgGoTo(1);
 }
 
-function cfgRenderExtraList() {
-  var list = document.getElementById('cfgExtraList');
-  if (cfg.extraProducts.length === 0) {
-    list.style.display = 'none';
-    list.innerHTML = '';
-    return;
-  }
-  list.style.display = '';
-  list.innerHTML = '<div style="font-size:var(--p-sm);font-weight:700;color:var(--black);margin-bottom:0.5rem;">Dodane produkty:</div>' +
-    cfg.extraProducts.map(function(v) {
-      return '<div style="display:flex;align-items:center;justify-content:space-between;padding:0.5rem 0.75rem;background:rgba(0,150,150,0.06);border:1.5px solid var(--teal);border-radius:6px;margin-bottom:0.4rem;">' +
-        '<span>' + cfgExtraIcons[v] + ' ' + cfgExtraNames[v] + '</span>' +
-        '<button onclick="cfgRemoveExtra(\'' + v + '\')" style="background:none;border:none;cursor:pointer;color:var(--gray-3);font-size:1rem;padding:0 0.25rem;">✕</button>' +
+function cfgRenderSavedProducts() {
+  var el = document.getElementById('cfgProductsList');
+  if (cfg.savedProducts.length === 0) { el.innerHTML = ''; return; }
+  el.innerHTML = '<div style="font-size:var(--p-sm);font-weight:700;margin-bottom:0.5rem;color:var(--black);">Skonfigurowane produkty:</div>' +
+    cfg.savedProducts.map(function(p, i) {
+      return '<div class="cfg-saved-product">' +
+        '<span>' + CFG_ICONS[p.product] + ' ' + p.label + ' · ' + p.qty.toLocaleString('pl-PL') + ' szt.</span>' +
+        '<button onclick="cfgRemoveSaved(' + i + ')" style="background:none;border:none;cursor:pointer;color:var(--gray-3);font-size:1rem;">✕</button>' +
       '</div>';
     }).join('');
+}
+
+function cfgRemoveSaved(i) {
+  cfg.savedProducts.splice(i, 1);
+  cfgRenderSavedProducts();
 }
 
 function cfgSubmit() {
