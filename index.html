@@ -2436,6 +2436,7 @@ document.addEventListener('click', function(e) {
             <div class="cfg-dot" data-dot="3"></div>
             <div class="cfg-dot" data-dot="4"></div>
             <div class="cfg-dot" data-dot="5"></div>
+            <div class="cfg-dot" data-dot="6"></div>
           </div>
           <button class="cfg-close" onclick="closeConfigurator()" title="Zamknij">✕</button>
         </div>
@@ -2473,6 +2474,14 @@ document.addEventListener('click', function(e) {
             <div class="cfg-opt-name">Batony & Przekąski</div>
             <div class="cfg-opt-desc">Batony zbożowe, energetyczne i owocowe w folii.</div>
             <div class="cfg-opt-price">od 4,20 PLN/szt</div>
+          </div>
+
+          <div class="cfg-opt" data-key="product" data-val="bakalie" onclick="cfgSelect(this)">
+            <div class="cfg-opt-check">✓</div>
+            <div class="cfg-opt-icon">🍓</div>
+            <div class="cfg-opt-name">Bakalie & Owoce</div>
+            <div class="cfg-opt-desc">Orzechy, suszone owoce i liofilizaty w personalizowanych torebkach.</div>
+            <div class="cfg-opt-price">od 5,80 PLN/szt</div>
           </div>
 
         </div>
@@ -2568,8 +2577,43 @@ document.addEventListener('click', function(e) {
         <button class="cfg-no-logo-btn" id="cfgNoLogoBtn" onclick="cfgNoLogo()">Nie mam logo / zamówię bez logo</button>
       </div>
 
-      <!-- KROK 5: Wycena i dane -->
+      <!-- KROK 5: Dodaj kolejny produkt -->
       <div class="cfg-step" id="cfgS5">
+        <div class="cfg-step-title">Chcesz dodać kolejny produkt?</div>
+        <div class="cfg-step-sub">Możesz skonfigurować kilka produktów w jednym zapytaniu.</div>
+
+        <div id="cfgExtraList" style="display:none;margin-bottom:1rem;"></div>
+
+        <div class="cfg-options cols3" id="cfgExtraOpts">
+          <div class="cfg-opt" data-key="extra" data-val="czekolada" onclick="cfgAddExtra(this)">
+            <div class="cfg-opt-icon">🍫</div>
+            <div class="cfg-opt-name">Czekolady & Tabliczki</div>
+            <div class="cfg-opt-price">od 6,50 PLN/szt</div>
+          </div>
+          <div class="cfg-opt" data-key="extra" data-val="praliny" onclick="cfgAddExtra(this)">
+            <div class="cfg-opt-icon">🎁</div>
+            <div class="cfg-opt-name">Praliny Rzemieślnicze</div>
+            <div class="cfg-opt-price">od 10,00 PLN/szt</div>
+          </div>
+          <div class="cfg-opt" data-key="extra" data-val="batony" onclick="cfgAddExtra(this)">
+            <div class="cfg-opt-icon">🍬</div>
+            <div class="cfg-opt-name">Batony & Przekąski</div>
+            <div class="cfg-opt-price">od 4,20 PLN/szt</div>
+          </div>
+          <div class="cfg-opt" data-key="extra" data-val="bakalie" onclick="cfgAddExtra(this)">
+            <div class="cfg-opt-icon">🍓</div>
+            <div class="cfg-opt-name">Bakalie & Owoce</div>
+            <div class="cfg-opt-price">od 5,80 PLN/szt</div>
+          </div>
+        </div>
+
+        <div style="margin-top:1rem;padding:1rem;background:var(--gray-1);border-radius:8px;font-size:var(--p-sm);color:var(--gray-3);text-align:center;">
+          Nie chcesz dodawać więcej? Kliknij <strong>Dalej →</strong> żeby przejść do danych kontaktowych.
+        </div>
+      </div>
+
+      <!-- KROK 6: Wycena i dane -->
+      <div class="cfg-step" id="cfgS6">
         <div class="cfg-step-title">Podsumowanie i wycena</div>
         <div class="cfg-step-sub">Sprawdź konfigurację i podaj dane kontaktowe, by otrzymać ofertę.</div>
 
@@ -2619,7 +2663,7 @@ document.addEventListener('click', function(e) {
         <!-- Cena -->
         <div class="cfg-price-box">
           <div>
-            <div class="cfg-price-box-label">Szacowana cena całkowita *</div>
+            <div class="cfg-price-box-label">Szacowana cena całkowita * <span style="font-weight:400;color:var(--gray-3)">(przy min. 100 sztukach)</span></div>
             <div class="cfg-price-box-amount" id="sTotalPrice">—</div>
           </div>
           <div style="text-align:right;">
@@ -2667,13 +2711,14 @@ document.addEventListener('click', function(e) {
 // ===== KONFIGURATOR =====
 var cfg = {
   step: 1,
-  totalSteps: 5,
+  totalSteps: 6,
+  extraProducts: [],
   selections: { product: null, quality: null, print: null, logo: null },
   qty: 250,
   logoFile: null,
 
   // base prices per unit (PLN)
-  basePrices: { czekolada: 6.5, praliny: 10.0, batony: 4.2 },
+  basePrices: { czekolada: 6.5, praliny: 10.0, batony: 4.2, bakalie: 5.8 },
   qualityMult: { ekonomiczna: 1.0, standard: 1.4, premium: 2.0 },
   printAdd:    { brak: 0, standard: 0.35, premium: 0.85 },
   logoAdd:     0.22,
@@ -2739,6 +2784,7 @@ function cfgUpdateNext() {
   if (step === 2 && !cfg.selections.quality)  ok = false;
   if (step === 3 && !cfg.selections.print)    ok = false;
   if (step === 4 && cfg.selections.logo === null) ok = false;
+  // krok 5 (dodaj produkt) zawsze ok — można pominąć
   btn.disabled = !ok;
 }
 
@@ -2804,6 +2850,9 @@ function cfgGoTo(n) {
     cfgFillSummary();
   }
 
+  // krok 5 — odśwież listę dodanych produktów
+  if (n === 5) cfgRenderExtraList();
+
   cfgUpdateNext();
   cfgUpdatePrice();
 
@@ -2813,12 +2862,13 @@ function cfgGoTo(n) {
 
 function cfgFillSummary() {
   var labels = {
-    product:  { czekolada: 'Czekolady & Tabliczki', praliny: 'Praliny Rzemieślnicze', batony: 'Batony & Przekąski' },
+    product:  { czekolada: 'Czekolady & Tabliczki', praliny: 'Praliny Rzemieślnicze', batony: 'Batony & Przekąski', bakalie: 'Bakalie & Owoce' },
     quality:  { ekonomiczna: 'Ekonomiczna', standard: 'Standard', premium: 'Premium' },
     print:    { brak: 'Bez nadruku', standard: 'Nadruk Standard', premium: 'Nadruk Premium' }
   };
   var s = cfg.selections;
-  document.getElementById('sProduct').textContent  = labels.product[s.product]  || '—';
+  var extraStr = cfg.extraProducts.length ? ' + ' + cfg.extraProducts.map(function(v){ return labels.product[v]; }).join(', ') : '';
+  document.getElementById('sProduct').textContent  = (labels.product[s.product] || '—') + extraStr;
   document.getElementById('sQuality').textContent  = labels.quality[s.quality]  || '—';
   document.getElementById('sPrint').textContent    = labels.print[s.print]      || '—';
   document.getElementById('sLogo').textContent     = (s.logo === 'plik') ? (cfg.logoFile ? cfg.logoFile.name : 'Plik wgrany') : 'Bez logo';
@@ -2927,6 +2977,45 @@ function cfgNoLogo() {
 }
 
 // submit
+var cfgExtraNames = { czekolada: 'Czekolady & Tabliczki', praliny: 'Praliny Rzemieślnicze', batony: 'Batony & Przekąski', bakalie: 'Bakalie & Owoce' };
+var cfgExtraIcons = { czekolada: '🍫', praliny: '🎁', batony: '🍬', bakalie: '🍓' };
+
+function cfgAddExtra(el) {
+  var val = el.dataset.val;
+  // nie dodawaj duplikatu ani głównego produktu
+  if (val === cfg.selections.product) {
+    el.style.opacity = '0.4';
+    setTimeout(function() { el.style.opacity = ''; }, 600);
+    return;
+  }
+  if (cfg.extraProducts.indexOf(val) === -1) {
+    cfg.extraProducts.push(val);
+  }
+  cfgRenderExtraList();
+}
+
+function cfgRemoveExtra(val) {
+  cfg.extraProducts = cfg.extraProducts.filter(function(v) { return v !== val; });
+  cfgRenderExtraList();
+}
+
+function cfgRenderExtraList() {
+  var list = document.getElementById('cfgExtraList');
+  if (cfg.extraProducts.length === 0) {
+    list.style.display = 'none';
+    list.innerHTML = '';
+    return;
+  }
+  list.style.display = '';
+  list.innerHTML = '<div style="font-size:var(--p-sm);font-weight:700;color:var(--black);margin-bottom:0.5rem;">Dodane produkty:</div>' +
+    cfg.extraProducts.map(function(v) {
+      return '<div style="display:flex;align-items:center;justify-content:space-between;padding:0.5rem 0.75rem;background:rgba(0,150,150,0.06);border:1.5px solid var(--teal);border-radius:6px;margin-bottom:0.4rem;">' +
+        '<span>' + cfgExtraIcons[v] + ' ' + cfgExtraNames[v] + '</span>' +
+        '<button onclick="cfgRemoveExtra(\'' + v + '\')" style="background:none;border:none;cursor:pointer;color:var(--gray-3);font-size:1rem;padding:0 0.25rem;">✕</button>' +
+      '</div>';
+    }).join('');
+}
+
 function cfgSubmit() {
   var name  = document.getElementById('cfgName').value.trim();
   var email = document.getElementById('cfgEmail').value.trim();
