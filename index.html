@@ -3111,7 +3111,7 @@ function coShowPanel(name) {
     document.getElementById('coShippingLabel').textContent = 'GRATIS — ' + names[co.shipping];
   }
   if (name === 'paczkomat') {
-    setTimeout(function() { window.dispatchEvent(new Event('resize')); }, 100);
+    coInitGeowidget();
   }
 }
 
@@ -3152,10 +3152,18 @@ function coSelectShipping() {
   coNext();
 }
 
-// KROK: Paczkomat — InPost Geowidget callback
-document.addEventListener('DOMContentLoaded', function() {
-  var widget = document.getElementById('inpostWidget');
-  if (!widget) return;
+// KROK: Paczkomat — InPost Geowidget tworzony dynamicznie przy pierwszym otwarciu
+var inpostWidgetCreated = false;
+function coInitGeowidget() {
+  if (inpostWidgetCreated) return;
+  inpostWidgetCreated = true;
+  var container = document.getElementById('inpostWidgetContainer');
+  var widget = document.createElement('inpost-geowidget');
+  widget.setAttribute('id', 'inpostWidget');
+  widget.setAttribute('token', 'eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJzQlpXVzFNZzVlQnpDYU1XU3JvTlBjRWFveFpXcW9Ua2FuZVB3X291LWxvIn0.eyJleHAiOjIwOTExMjkxNTYsImlhdCI6MTc3NTc2OTE1NiwianRpIjoiZGE4NDQwNjYtMWY3My00MjBhLWJhMzEtNThkYWU2ODkxZDFhIiwiaXNzIjoiaHR0cHM6Ly9sb2dpbi5pbnBvc3QucGwvYXV0aC9yZWFsbXMvZXh0ZXJuYWwiLCJzdWIiOiJmOjEyNDc1MDUxLTFjMDMtNGU1OS1iYTBjLTJiNDU2OTVlZjUzNTpJM1NPUkhIMzVwdzB1V0c1M3c4b0lNWXdIT3R6QUs4em5GekxCWW9xalBzIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoic2hpcHgiLCJzZXNzaW9uX3N0YXRlIjoiZjA3N2JmZDMtMzUyMy00NDE4LWE4NmQtYjMyMTRhZjJlNWRjIiwic2NvcGUiOiJvcGVuaWQgYXBpOmFwaXBvaW50cyIsInNpZCI6ImYwNzdiZmQzLTM1MjMtNDQxOC1hODZkLWIzMjE0YWYyZTVkYyIsImFsbG93ZWRfcmVmZXJyZXJzIjoic3plZmJlemN1a3J1LnBsIiwidXVpZCI6Ijc3ODI4N2RjLWM2NmEtNDc4ZC1iYjAwLWIzZDEwMWNlMDE2YiJ9.AjIa6urjmMvjj7BW0XYZZBXTF0WWFQFx8ocHZ1To_LYmbJ2WShNLYAKBVhYQmE7pFs9WHitYXH8RSZXfQrJyEbwgHYd208AnLMBRfSDWWmY0wVb1rUb3dLrklawshguPMhOQsdHawAI6Q6xdBXzxKYtCDeplokd9AvArKKH1imSxvR4aISmL4bRz7rFHtaATrjDfNaEa36blxcdmbyiKfU6p7_2usmCsp3DtPRxtr26Fj-il9xulF0jpZBmqO8P1Anb5oq0MpvLDZ1hJfJrnof-vD4A6tO-NYz6izReikOu1CbUA1YUuCJxH1768bMD5QIZk0pXWFIxsSxqmW3sBYw');
+  widget.setAttribute('language', 'pl');
+  widget.setAttribute('country', 'PL');
+  widget.setAttribute('config', 'parcelCollect');
   widget.addEventListener('pointSelect', function(e) {
     co.point = e.detail;
     var addr = (e.detail.address_details || {});
@@ -3164,7 +3172,8 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('coPointAddr').textContent = line || (e.detail.address || {}).line1 || '';
     document.getElementById('coSelectedPoint').style.display = '';
   });
-});
+  container.appendChild(widget);
+}
 
 function coConfirmPoint() {
   if (!co.point) { alert('Wybierz paczkomat z mapy.'); return; }
@@ -3273,13 +3282,7 @@ function coSubmit() {
     <!-- PANEL: Wybór paczkomatu (InPost Geowidget) -->
     <div id="coPanel_paczkomat" style="display:none">
       <div class="checkout-section-label">Wybierz paczkomat</div>
-      <inpost-geowidget
-        id="inpostWidget"
-        token="eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJzQlpXVzFNZzVlQnpDYU1XU3JvTlBjRWFveFpXcW9Ua2FuZVB3X291LWxvIn0.eyJleHAiOjIwOTExMjkxNTYsImlhdCI6MTc3NTc2OTE1NiwianRpIjoiZGE4NDQwNjYtMWY3My00MjBhLWJhMzEtNThkYWU2ODkxZDFhIiwiaXNzIjoiaHR0cHM6Ly9sb2dpbi5pbnBvc3QucGwvYXV0aC9yZWFsbXMvZXh0ZXJuYWwiLCJzdWIiOiJmOjEyNDc1MDUxLTFjMDMtNGU1OS1iYTBjLTJiNDU2OTVlZjUzNTpJM1NPUkhIMzVwdzB1V0c1M3c4b0lNWXdIT3R6QUs4em5GekxCWW9xalBzIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoic2hpcHgiLCJzZXNzaW9uX3N0YXRlIjoiZjA3N2JmZDMtMzUyMy00NDE4LWE4NmQtYjMyMTRhZjJlNWRjIiwic2NvcGUiOiJvcGVuaWQgYXBpOmFwaXBvaW50cyIsInNpZCI6ImYwNzdiZmQzLTM1MjMtNDQxOC1hODZkLWIzMjE0YWYyZTVkYyIsImFsbG93ZWRfcmVmZXJyZXJzIjoic3plZmJlemN1a3J1LnBsIiwidXVpZCI6Ijc3ODI4N2RjLWM2NmEtNDc4ZC1iYjAwLWIzZDEwMWNlMDE2YiJ9.AjIa6urjmMvjj7BW0XYZZBXTF0WWFQFx8ocHZ1To_LYmbJ2WShNLYAKBVhYQmE7pFs9WHitYXH8RSZXfQrJyEbwgHYd208AnLMBRfSDWWmY0wVb1rUb3dLrklawshguPMhOQsdHawAI6Q6xdBXzxKYtCDeplokd9AvArKKH1imSxvR4aISmL4bRz7rFHtaATrjDfNaEa36blxcdmbyiKfU6p7_2usmCsp3DtPRxtr26Fj-il9xulF0jpZBmqO8P1Anb5oq0MpvLDZ1hJfJrnof-vD4A6tO-NYz6izReikOu1CbUA1YUuCJxH1768bMD5QIZk0pXWFIxsSxqmW3sBYw"
-        language="pl"
-        country="PL"
-        config="parcelCollect">
-      </inpost-geowidget>
+      <div id="inpostWidgetContainer"></div>
       <div id="coSelectedPoint" class="checkout-point-selected" style="display:none">
         <div class="checkout-point-icon">📦</div>
         <div>
