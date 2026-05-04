@@ -3110,6 +3110,9 @@ function coShowPanel(name) {
     var names = { inpost: 'InPost Paczkomat', dpd: 'DPD Kurier' };
     document.getElementById('coShippingLabel').textContent = 'GRATIS — ' + names[co.shipping];
   }
+  if (name === 'paczkomat') {
+    setTimeout(function() { window.dispatchEvent(new Event('resize')); }, 100);
+  }
 }
 
 function coUpdateStepBar() {
