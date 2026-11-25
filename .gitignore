@@ -1,0 +1,3 @@
+
+# lokalne ustawienia Claude Code (mogą zawierać dane dostępowe)
+.claude/settings.local.json
